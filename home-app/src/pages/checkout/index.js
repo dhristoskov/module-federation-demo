@@ -23,7 +23,7 @@ const Products = () => {
               isLoggedIn={isLoggedIn}
               setSelectedOptions={setSelectedOptions}
             />
-            <AdditionalOptions />
+            <AdditionalOptions selectedOptions={selectedOptions} />
           </div>
           <div className="flex flex-col flex-1">
             <p>Payment</p>

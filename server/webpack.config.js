@@ -1,6 +1,6 @@
 import path from "path";
 import { fileURLToPath } from "url";
-import '@babel/register'
+import "@babel/register";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,4 +22,9 @@ export default {
       },
     ],
   },
+  externals: [
+    {
+      bcrypt: "commonjs bcrypt",
+    },
+  ],
 };

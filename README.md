@@ -14,7 +14,7 @@ There are different ways to install it:
 - Use [nvm, Node Version Manager](https://github.com/nvm-sh/nvm)
 - Use [asdf, another version manager](https://github.com/asdf-vm/asdf), in this case it's not just for Node.
 
-It's recommended to use a version manager, so the Node version can be easily changed. Then, asdf is just better than nvm because you can also manage other software with it.
+It's recommended to use a version manager, so the Node version can be easily changed.
 
 ## Install
 

@@ -73,11 +73,16 @@ const Checkout = ({ isLoggedIn, setSelectedOptions }) => {
     }
   }, [recheckBasket])
 
+  useEffect(() => {
+    const selectedOptionsIds = basketItems?.options?.map((option) => option.id) || []
+    setSelectedOptions(selectedOptionsIds)
+  }, [basketItems])
+
   return (
     <section className="flex flex-col">
       <Typography additionalClasses="text-xl font-bold text-slate-900 mb-6">In your Cart:</Typography>
       <div className="flex flex-col gap-3">
-        {basketItems?.options?.length == 0 && <p>Back to shop</p> }
+        {basketItems?.options?.length == 0 && <p>Back to shop</p>}
         {basketItems?.products?.length > 0 &&
           basketItems?.products?.map((product) => (
             <div

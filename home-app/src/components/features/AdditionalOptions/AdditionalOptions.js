@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import OptionsList from './components/OptionsList'
 import Typography from '@/components/elements/Typography/Typography'
@@ -88,7 +88,7 @@ const BALLOONS = [
   },
 ]
 
-const AdditionalOptions = ({}) => {
+const AdditionalOptions = ({ selectedOptions }) => {
   const [selected, setSelected] = useState(null)
 
   const handleSelect = (item) => {
