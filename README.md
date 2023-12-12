@@ -20,7 +20,7 @@ It's recommended to use a version manager, so the Node version can be easily cha
 
 Clone the repository:
 
-    git clone  https://github.com/dhristoskov/phoenix-project
+    git clone  https://github.com/dhristoskov/module-federation-demo
 
 Install dependencies for every project:
 
