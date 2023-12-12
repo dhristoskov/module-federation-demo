@@ -15,7 +15,7 @@ const Auth = dynamic(() => import('remote/Auth'), {
   loading: () => <div>Loading...</div>,
 })
 
-const MainLayout = ({ tag = 'section', children }) => {
+const MainLayout = ({ tag = 'section', children, categories }) => {
   const { activeNotification } = useContext(NotificationContext)
   const { isLoggedIn } = useContext(AuthContext)
   const [auth, setAuth] = useState(false)
@@ -50,7 +50,7 @@ const MainLayout = ({ tag = 'section', children }) => {
       )}
       <main className="relative">
         <Notification activeNotification={activeNotification} />
-        <Header />
+        <Header categories={categories} />
         <InfoHeader />
         <section className="my-16">
           <Breakpoints tag={tag}>{children}</Breakpoints>
@@ -59,18 +59,6 @@ const MainLayout = ({ tag = 'section', children }) => {
       </main>
     </>
   )
-}
-
-export const getStaticProps = async () => {
-  const auth = await import('remote/Auth')
-
-  if (auth.getServersideProps) {
-    return await auth.getServersideProps(ctx)
-  }
-
-  return {
-    props: {},
-  }
 }
 
 export default MainLayout

@@ -25,12 +25,6 @@ import bell_snooze from './assets/bell_snooze.svg'
 import camera from './assets/camera.svg'
 import chat from './assets/chat.svg'
 import checkmark from './assets/checkmark.svg'
-// import { ReactComponent as CheckmarkCircle } from '../../foundation/icons/checkmark_circle.svg'
-// import { ReactComponent as CheckmarkSquare } from '../../foundation/icons/checkmark_square.svg'
-// import { ReactComponent as ChevronDoubleDown } from '../../foundation/icons/chevron_double_down.svg'
-// import { ReactComponent as ChevronDoubleLeft } from '../../foundation/icons/chevron_double_left.svg'
-// import { ReactComponent as ChevronDoubleRight } from '../../foundation/icons/chevron_double_right.svg'
-// import { ReactComponent as ChevronDoubleUp } from '../../foundation/icons/chevron_double_up.svg'
 import chevron_down from './assets/chevron_down.svg'
 import chevron_left from './assets/chevron_left.svg'
 import chevron_right from './assets/chevron_right.svg'
@@ -69,10 +63,6 @@ import headphone from './assets/headphone.svg'
 import heart from './assets/heart.svg'
 import home from './assets/home.svg'
 import info_circle from './assets/info_circle.svg'
-// import { ReactComponent as KanbanBoard } from '../../foundation/icons/kanban_board.svg'
-// import { ReactComponent as Link } from '../../foundation/icons/link.svg'
-// import { ReactComponent as ListBullet } from '../../foundation/icons/list_bullet.svg'
-// import { ReactComponent as ListNumber } from '../../foundation/icons/list_number.svg'
 import lock from './assets/lock.svg'
 import lock_alt from './assets/lock_alt.svg'
 import magic_wand from './assets/magic_wand.svg'
@@ -98,10 +88,6 @@ import plus from './assets/plus.svg'
 import plus_circle from './assets/plus_circle.svg'
 import plus_square from './assets/plus_square.svg'
 import printer from './assets/printer.svg'
-// import { ReactComponent as PrioritizeDown } from '../../foundation/icons/prioritize_down.svg'
-// import { ReactComponent as PrioritizeUp } from '../../foundation/icons/prioritize_up.svg'
-// import { ReactComponent as QRCode } from '../../foundation/icons/qr_code.svg'
-// import { ReactComponent as RefreshDouble } from '../../foundation/icons/refresh_double.svg'
 import search from './assets/search.svg'
 import send from './assets/send.svg'
 import share from './assets/share.svg'
@@ -115,12 +101,12 @@ import sort_amount_up from './assets/sort_amount_up.svg'
 import sort_numeric_down from './assets/sort_numeric_down.svg'
 import sort_numeric_up from './assets/sort_numeric_up.svg'
 import sticky_notes from './assets/sticky_notes.svg'
-// import { ReactComponent as Sun } from '../../foundation/icons/sun.svg'
-// import { ReactComponent as Table } from '../../foundation/icons/table.svg'
-// import { ReactComponent as Text } from '../../foundation/icons/text.svg'
-// import { ReactComponent as TextDecoration } from '../../foundation/icons/text_decoration.svg'
-// import { ReactComponent as Unlink } from '../../foundation/icons/unlink.svg'
-// import { ReactComponent as Upload } from '../../foundation/icons/upload.svg'
+import sun from './assets/sun.svg'
+import table from './assets/table.svg'
+import text from './assets/text.svg'
+import text_decoration from './assets/text_decoration.svg'
+import unlink from './assets/unlink.svg'
+import upload from './assets/upload.svg'
 import user from './assets/user.svg'
 import users from './assets/users.svg'
 import wallet from './assets/wallet.svg'
@@ -154,12 +140,6 @@ const icons = {
   camera: camera,
   chat: chat,
   checkmark: checkmark,
-  // 'checkmark-circle': CheckmarkCircle,
-  // 'checkmark-square': CheckmarkSquare,
-  // 'chevron-double-down': ChevronDoubleDown,
-  // 'chevron-double-left': ChevronDoubleLeft,
-  // 'chevron-double-right': ChevronDoubleRight,
-  // 'chevron-double-up': ChevronDoubleUp,
   'chevron-down': chevron_down,
   'chevron-left': chevron_left,
   'chevron-right': chevron_right,
@@ -198,10 +178,6 @@ const icons = {
   heart: heart,
   home: home,
   'info-circle': info_circle,
-  // 'kanban-board': KanbanBoard,
-  // link: Link,
-  // 'list-bullet': ListBullet,
-  // 'list-number': ListNumber,
   lock: lock,
   'lock-alt': lock_alt,
   'magic-wand': magic_wand,
@@ -227,10 +203,6 @@ const icons = {
   'plus-square': plus_square,
   plus: plus,
   printer: printer,
-  // 'prioritize-down': PrioritizeDown,
-  // 'prioritize-up': PrioritizeUp,
-  // 'qr-code': QRCode,
-  // 'refresh-double': RefreshDouble,
   search: search,
   send: send,
   share: share,
@@ -244,12 +216,12 @@ const icons = {
   'sort-numeric-down': sort_numeric_down,
   'sort-numeric-up': sort_numeric_up,
   'sticky-notes': sticky_notes,
-  // sun: Sun,
-  // table: Table,
-  // 'text-decoration': TextDecoration,
-  // text: Text,
-  // unlink: Unlink,
-  // upload: Upload,
+  sun: sun,
+  table: table,
+  'text-decoration': text_decoration,
+  text: text,
+  unlink: unlink,
+  upload: upload,
   user: user,
   users: users,
   wallet: wallet,

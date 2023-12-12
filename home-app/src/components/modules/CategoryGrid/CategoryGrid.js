@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Image from 'next/image'
 
 import Typography from '@/components/elements/Typography/Typography'
@@ -12,8 +12,8 @@ const CategoryGrid = ({ categories }) => {
           className="relative cursor-pointer hover:shadow-2xl shadow-slate-500"
         >
           <Image
-            src={category.image}
-            alt={category.title}
+            src={category.attributes.image}
+            alt={category.attributes.title}
             loading="eager"
             priority={true}
             width={0}
@@ -26,7 +26,7 @@ const CategoryGrid = ({ categories }) => {
               variant="h6"
               additionalClasses="text-2xl font-bold font-slate-900 text-center"
             >
-              {category.title}
+              {category.attributes.title}
             </Typography>
           </div>
         </div>

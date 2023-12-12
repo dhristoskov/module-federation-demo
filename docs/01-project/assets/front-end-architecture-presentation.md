@@ -1,14 +1,3 @@
----
-marp: true
-theme: gaia
-class: [invert]
-paginate: true
----
-
-# Front-end Architecture
-
----
-
 # Front-end Architecture
 
 1. Architecture

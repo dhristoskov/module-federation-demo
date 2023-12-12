@@ -7,7 +7,7 @@ import PopularProducts from '@/components/features/Products/PopularProducts/Popu
 import ProductsOnSale from '@/components/features/Products/ProductsOnSale/ProductsOnSale'
 import { fetchAPI } from '@/lib/api'
 
-const Home = ({products, faqs}) => {
+const Home = ({ products, faqs, categories }) => {
   const formattedProducts = products.map((product) => {
     return {
       id: product.id,
@@ -24,31 +24,32 @@ const Home = ({products, faqs}) => {
   const productsNotOnSale = formattedProducts.filter((product) => product.onSale === false)
 
   return (
-    <MainLayout>
+    <MainLayout categories={categories}>
       <div className="col-span-full col-start-1">
-        <PopularProducts products={productsNotOnSale}/>
-        <ProductsOnSale products={productsOnSale}/>
-        <Category />
-        <Faq faqs={faqs}/>
+        <PopularProducts products={productsNotOnSale} />
+        <ProductsOnSale products={productsOnSale} />
+        <Category categories={categories} />
+        <Faq faqs={faqs} />
       </div>
     </MainLayout>
   )
 }
 
 export const getStaticProps = async () => {
-  const [products, faqs] = await Promise.all([
+  const [products, faqs, categories] = await Promise.all([
     fetchAPI('/products'),
     fetchAPI('/faqs'),
+    fetchAPI('/categories'),
   ])
 
   return {
     props: {
       products: products?.data || [],
       faqs: faqs?.data || [],
+      categories: categories?.data || [],
     },
     revalidate: 1,
   }
 }
 
 export default Home
-

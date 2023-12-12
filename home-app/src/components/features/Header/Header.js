@@ -15,7 +15,7 @@ import { AuthContext } from 'remote/storeAuth'
 const showComponent = ['/products', '/products/[id]', '/', '/home']
 const hideBasket = ['/checkout', '/checkout/[id]']
 
-const Header = () => {
+const Header = ({ categories }) => {
   const { isLoggedIn, logout, user } = useContext(AuthContext)
   const pathName = usePathname()
 
@@ -45,7 +45,7 @@ const Header = () => {
               />
             </Link>
           </div>
-          {shouldShowComponent && <CategoryDropDown />}
+          {shouldShowComponent && <CategoryDropDown categories={categories} />}
           {shouldShowComponent && <GlobalSearch />}
           <div className="flex items-center gap-3 sm:gap-5">
             {!isLoggedIn && (
