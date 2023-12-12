@@ -1,0 +1,18 @@
+{
+  "name": "module-demo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"cd home-app; npm run dev\" \"cd remote-app; npm run dev\" \"cd cms-app; npm run dev\" \"cd server; npm run dev\"",
+    "build": "concurrently \"cd home-app; npm run build\" \"cd remote-app; npm run build\" \"cd cms-app; npm run build\"",
+    "serve": "concurrently \"cd home-app; npm run start\" \"cd remote-app; npm run start\" \"cd cms-app; npm run start\" \"cd server; npm run start\"",
+    "format": "concurrently \"cd home-app; npm run format\" \"cd remote-app; npm run format\"",
+    "format:check": "concurrently \"cd home-app; npm run format:check\" \"cd remote-app; npm run format:check\""
+  },
+  "dependencies": {
+    "concurrently": "^8.2.1"
+  },
+  "engines" : { 
+    "node" : ">=18.4.0" 
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "cms-app",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "@strapi/strapi": "4.15.0",
+    "@strapi/plugin-users-permissions": "4.15.0",
+    "@strapi/plugin-i18n": "4.15.0",
+    "better-sqlite3": "8.6.0"
+  },
+  "strapi": {
+    "uuid": "619e4b30-051b-413d-a24f-0c0fa244a5c6"
+  },
+  "engines" : { 
+    "node" : ">=18.4.0" 
+  }
+}

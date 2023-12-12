@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: SourceSansPro;
+    src: local('SourceSansPro') url('/fonts/SourceSansPro-900.woff2') format('woff2');
+    font-weight: 900;
+  }
+
+  @font-face {
+    font-family: SourceSansPro;
+    src: local('SourceSansPro') url('/fonts/SourceSansPro-700.woff2') format('woff2');
+    font-weight: 700;
+  }
+
+  @font-face {
+    font-family: SourceSansPro;
+    src: local('SourceSansPro') url('/fonts/SourceSansPro-Regular.woff2') format('woff2');
+    font-weight: 400;
+  }
+
+  html {
+    box-sizing: border-box;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd {
+    margin: 0;
+  }
+
+  ul[role='list'],
+  ol[role='list'] {
+    list-style: none;
+  }
+
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    min-height: 100vh;
+    text-rendering: optimizeSpeed;
+    line-height: 1.5;
+  }
+
+  a:not([class]) {
+    text-decoration-skip-ink: auto;
+  }
+}

@@ -1,0 +1,30 @@
+---
+title: Committing
+description: How to write commits
+tags: ['setup', 'git']
+---
+
+## Branches
+
+Conventional commits should be used as well to name branches.
+
+## Commits
+
+The commit message should follow a specific format defined by [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+
+## Pull Requests
+
+The title must follow the Conventional Commits described in the [Commits](#commits) section, with two additions:
+
+- The ticket number before the title
+- The Pull Request number
+
+So, the final format should be like this one:
+
+    type(scope): [XXX-123456] title of the ticket
+
+Which is compose with the following elements:
+
+- Type: "feat", "fix" are the most common, the full list is in the [Commits](#commits) section.
+- Scope: described in the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+- Ticket number: [XXX-XXXXXX]
