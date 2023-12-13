@@ -56,7 +56,7 @@ const nextConfig = {
       historyApiFallback: true,
       hot: true,
     },
-    config.cache = false
+    // config.cache = false
     config.output.publicPath = 'auto'
     return config
   },

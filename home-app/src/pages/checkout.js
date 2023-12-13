@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 
 import MainLayout from '@/components/elements/Layout/MainLayout/MainLayout'
@@ -6,28 +7,38 @@ import AdditionalOptions from '@/components/features/AdditionalOptions/Additiona
 import { AuthContext } from 'remote/storeAuth'
 import { fetchAPI } from '@/lib/api'
 
-const Checkoput = dynamic(() => import('remote/Checkout'), {
+const Checkout = dynamic(() => import('remote/Checkout'), {
   ssr: false,
-  loading: () => <div>Loading...</div>,
+  suspense: true,
 })
 
 const Products = ({ options }) => {
   const [selectedOptions, setSelectedOptions] = useState([])
+  const [isBasketEmpty, setIsBasketEmpty] = useState(true)
   const { isLoggedIn } = useContext(AuthContext)
+  const router = useRouter()
+
+  const continueShopping = () => {
+    router.push('/')
+  }
 
   return (
     <MainLayout>
       <section className="col-span-full col-start-1">
         <section className="flex">
-          <div className="flex flex-col flex-1">
-            <Checkoput
+          <div className="flex flex-col flex-1 min-h-[36rem]">
+            <Checkout
               isLoggedIn={isLoggedIn}
+              continueShopping={continueShopping}
+              setIsBasketEmpty={setIsBasketEmpty}
               setSelectedOptions={setSelectedOptions}
             />
-            <AdditionalOptions
-              options={options}
-              selectedOptions={selectedOptions}
-            />
+            {!isBasketEmpty && (
+              <AdditionalOptions
+                options={options}
+                selectedOptions={selectedOptions}
+              />
+            )}
           </div>
           <div className="flex flex-col flex-1">
             <p>Payment</p>

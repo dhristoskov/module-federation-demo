@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
-import Image from 'next/image'
 
 import Typography from '@/components/elements/Typography/Typography'
+import BasketOverview from './components/BasketOverview'
 import OptionsCheckoutTable from '@/components/modules/OptionsCheckoutTable/OptionsCheckoutTable'
 
 import getBasketAPI from '../Basket/utils/getBasketAPI'
@@ -16,8 +16,9 @@ import deleteOptionLocalStorage from '../Basket/utils/deleteOptionLocalStorage'
 import { NotificationContext } from '@/store/NotificationContext'
 
 import 'tailwindcss/tailwind.css'
+import EmptyBasket from '@/components/modules/BasketProducts/components/EmptyBasket'
 
-const Checkout = ({ isLoggedIn, setSelectedOptions }) => {
+const Checkout = ({ isLoggedIn, setSelectedOptions, continueShopping, setIsBasketEmpty }) => {
   const { showNotification } = useContext(NotificationContext)
   const [recheckBasket, setRecheckBasket] = useState(false)
   const [basketItems, setBasketItems] = useState({
@@ -76,69 +77,40 @@ const Checkout = ({ isLoggedIn, setSelectedOptions }) => {
   useEffect(() => {
     const selectedOptionsIds = basketItems?.options?.map((option) => option.id) || []
     setSelectedOptions(selectedOptionsIds)
+    setIsBasketEmpty(basketItems?.products?.length === 0)
   }, [basketItems])
 
   return (
     <section className="flex flex-col">
       <Typography additionalClasses="text-xl font-bold text-slate-900 mb-6">In your Cart:</Typography>
       <div className="flex flex-col gap-3">
-        {basketItems?.options?.length == 0 && <p>Back to shop</p>}
+        {basketItems?.products?.length == 0 && (
+          <div className="max-w-[38rem]">
+            <EmptyBasket
+              title=" Your cart is epmpy"
+              deselectTitle="Check your Saved or Favorites items or continue shopping."
+              buttonTitle="Continue Shopping"
+              onClick={continueShopping}
+            />
+          </div>
+        )}
         {basketItems?.products?.length > 0 &&
           basketItems?.products?.map((product) => (
-            <div
+            <BasketOverview
               key={product.id}
-              className="w-full max-w-[38rem] flex justify-between items-center py-2 px-4 gap-4 shadow-xl"
-            >
-              <Image
-                loading="eager"
-                priority={true}
-                src={product.image}
-                alt={product.title}
-                width={0}
-                height={0}
-                style={{ width: 'auto', height: '150px' }}
-              />
-              <div className="flex items-center justify-between w-[65%]">
-                <div className="flex flex-col gap-2">
-                  <Typography additionalClasses="text-md font-bold">{product.title}</Typography>
-                  <p
-                    onClick={() => deleteItemFromBasket(product)}
-                    className="text-sm text-red-700 cursor-pointer"
-                  >
-                    Delete Item
-                  </p>
-                </div>
-                <div className="flex flex-col items-end">
-                  <Typography additionalClasses="text-md font-bold text-slate-900">€ {product.price}</Typography>
-                  <div className="flex gap-2 items-center">
-                    {product.quantity > 1 && (
-                      <p
-                        onClick={() => changeQuantity(product, 'minus')}
-                        className="bg-slate-500 text-white h-[1.25rem] w-[1.25rem] cursor-pointer flex items-center justify-center"
-                      >
-                        <span>-</span>
-                      </p>
-                    )}
-                    <Typography additionalClasses="text-md text-slate-900">Qty: {product.quantity}</Typography>
-                    <p
-                      onClick={() => changeQuantity(product, 'plus')}
-                      className="bg-slate-500 text-white h-[1.25rem] w-[1.25rem] cursor-pointer flex items-center justify-center"
-                    >
-                      <span>+</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+              product={product}
+              changeQuantity={changeQuantity}
+              deleteItemFromBasket={deleteItemFromBasket}
+            />
           ))}
       </div>
       <div className="flex flex-row justify-between items-center w-full max-w-[38rem] mt-10 border-t-2 border-slate-900 pt-2">
         <Typography additionalClasses="text-md text-slate-500">
-          {basketItems?.finalTotalPrice > 0 ? 'Cart Sub-Total' : 'Cart Total'}
+          {basketItems?.finalTotalPrice > 0 && basketItems?.products.length > 0 ? 'Cart Sub-Total' : 'Cart Total'}
         </Typography>
         <Typography additionalClasses="text-md font-bold text-slate-900">€ {basketItems?.totalPrice}</Typography>
       </div>
-      {basketItems?.options?.length > 0 && basketItems?.finalTotalPrice > 0 && (
+      {basketItems?.options?.length > 0 && basketItems?.finalTotalPrice > 0 && basketItems?.products.length > 0 && (
         <OptionsCheckoutTable
           options={basketItems?.options}
           price={basketItems?.finalTotalPrice}
