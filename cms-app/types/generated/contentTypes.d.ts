@@ -733,6 +733,41 @@ export interface ApiFaqFaq extends Schema.CollectionType {
   };
 }
 
+export interface ApiOptionOption extends Schema.CollectionType {
+  collectionName: 'options';
+  info: {
+    singularName: 'option';
+    pluralName: 'options';
+    displayName: 'Option';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    price: Attribute.Decimal & Attribute.Required;
+    title: Attribute.String & Attribute.Required;
+    description: Attribute.Text & Attribute.Required;
+    image: Attribute.String & Attribute.Required;
+    category: Attribute.Enumeration<['sacks', 'boxes', 'cards', 'baloons']> &
+      Attribute.Required;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::option.option',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::option.option',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiProductProduct extends Schema.CollectionType {
   collectionName: 'products';
   info: {
@@ -787,6 +822,7 @@ declare module '@strapi/types' {
       'plugin::i18n.locale': PluginI18NLocale;
       'api::category.category': ApiCategoryCategory;
       'api::faq.faq': ApiFaqFaq;
+      'api::option.option': ApiOptionOption;
       'api::product.product': ApiProductProduct;
     }
   }

@@ -4,13 +4,14 @@ import dynamic from 'next/dynamic'
 import MainLayout from '@/components/elements/Layout/MainLayout/MainLayout'
 import AdditionalOptions from '@/components/features/AdditionalOptions/AdditionalOptions'
 import { AuthContext } from 'remote/storeAuth'
+import { fetchAPI } from '@/lib/api'
 
 const Checkoput = dynamic(() => import('remote/Checkout'), {
   ssr: false,
   loading: () => <div>Loading...</div>,
 })
 
-const Products = () => {
+const Products = ({ options }) => {
   const [selectedOptions, setSelectedOptions] = useState([])
   const { isLoggedIn } = useContext(AuthContext)
 
@@ -23,7 +24,10 @@ const Products = () => {
               isLoggedIn={isLoggedIn}
               setSelectedOptions={setSelectedOptions}
             />
-            <AdditionalOptions selectedOptions={selectedOptions} />
+            <AdditionalOptions
+              options={options}
+              selectedOptions={selectedOptions}
+            />
           </div>
           <div className="flex flex-col flex-1">
             <p>Payment</p>
@@ -36,14 +40,13 @@ const Products = () => {
 
 export default Products
 
-export const getServersideProps = async (ctx) => {
-  const checkout = await import('remote/Checkout')
-
-  if (checkout.getServersideProps) {
-    return await checkout.getServersideProps(ctx)
-  }
+export const getStaticProps = async () => {
+  const options = await fetchAPI('/options')
 
   return {
-    props: {},
+    props: {
+      options: options?.data || [],
+    },
+    revalidate: 1,
   }
 }

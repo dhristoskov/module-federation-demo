@@ -10,7 +10,7 @@ const AddOption = dynamic(() => import('remote/AddOption'), {
   loading: () => <div>Loading...</div>,
 })
 
-const OptionsList = ({ options, sectionTitle, selected, onSelect }) => {
+const OptionsList = ({ options, sectionTitle, selected, onSelect, selectedOptions }) => {
   const selectedClass = 'border-slate-900'
 
   return (
@@ -26,14 +26,16 @@ const OptionsList = ({ options, sectionTitle, selected, onSelect }) => {
             className="relative"
           >
             <div
-              className={`cursor-pointer border-2 ${selected === option.id ? selectedClass : ''}`}
-              onClick={() => onSelect(option)}
+              className={`border-2 ${selected === option.id ? selectedClass : ''} ${
+                selectedOptions.includes(option.id) ? 'border-slate-900 cursor-auto' : 'border-slate-200 cursor-pointer'
+              }`}
+              {...(!selectedOptions.includes(option.id) ? { onClick: () => onSelect(option) } : {})}
             >
               <Image
                 loading="eager"
                 priority={true}
-                src={option.image}
-                alt={option.title}
+                src={option.attributes.image}
+                alt={option.attributes.title}
                 width={0}
                 height={0}
                 style={{ width: 'auto', height: '80px' }}
@@ -54,8 +56,8 @@ const OptionsList = ({ options, sectionTitle, selected, onSelect }) => {
                   />
                 </div>
                 <div className="flex flex-col gap-2 p-2">
-                  <Typography additionalClasses="text-md font-bold">{option.title}</Typography>
-                  <Typography additionalClasses="text-sm">{option.description}</Typography>
+                  <Typography additionalClasses="text-md font-bold">{option.attributes.title}</Typography>
+                  <Typography additionalClasses="text-sm">{option.attributes.description}</Typography>
                   <div className="w-full flex my-2 justify-end">
                     <AddOption
                       title="Add to cart"

@@ -76,7 +76,7 @@ const AccountView = () => {
       {ACCOUNT_VIEW_DATA.map((item) => (
         <Link
           key={item.id}
-          href={{ pathname: `/account/settings/`, query: { option: item.slug } }}
+          href={{ pathname: `/account-settings/`, query: { option: item.slug } }}
           className="flex items-center justify-between border-2 border-slate-900 p-8 shadow-xl rounded-2xl hover:bg-slate-200"
         >
           <div className="flex items-center gap-5">

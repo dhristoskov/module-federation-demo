@@ -1,4 +1,4 @@
-const { NextFederationPlugin } = require('@module-federation/nextjs-mf')
+const NextFederationPlugin = require('@module-federation/nextjs-mf')
 const { createDelegatedModule } = require('@module-federation/utilities')
 const path = require('path')
 
@@ -39,11 +39,11 @@ const nextConfig = {
         remotes: remotes(isServer),
         exposes: {
           // specify exposed pages and components
-          './home': './src/pages/index.js',
+          './Home': './src/pages/index.js',
           './pages-map': './pages-map.js',
-          './account': './src/pages/account/index.js',
-          './checkout': './src/pages/checkout/index.js',
-          './settings': './src/pages/account/settings/index.js',
+          './Checkout': './src/pages/checkout.js',
+          './Account': './src/pages/account.js',
+          './AccountSettings': './src/pages/account-settings.js',
         },
         shared: {
           // specify shared dependencies here
