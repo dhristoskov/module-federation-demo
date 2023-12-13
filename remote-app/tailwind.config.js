@@ -6,8 +6,14 @@ module.exports = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['SourceSansPro', 'Arial', 'sans-serif'],
+      },
+    },
     screens: {
+      xs: '320px',
+      // => @media (min-width: 320px) { ... }
       sm: '600px',
       // => @media (min-width: 600px) { ... }
 

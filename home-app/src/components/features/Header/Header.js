@@ -47,22 +47,21 @@ const Header = ({ categories }) => {
           </div>
           {shouldShowComponent && <CategoryDropDown categories={categories} />}
           {shouldShowComponent && <GlobalSearch />}
-          <div className="flex items-center gap-3 sm:gap-5">
+          <div className="flex items-center gap-4 cursor-pointer">
             {!isLoggedIn && (
-              <>
-                <p
-                  onClick={handleOnLoginClick}
-                  className="hidden md:block cursor-pointer text-sm font-bold text-neutral-700 hover:text-neutral-900 whitespace-nowrap"
-                >
+              <div
+                className="flex items-center gap-1 cursor-pointer"
+                onClick={handleOnLoginClick}
+              >
+                <p className="hidden md:block cursor-pointer text-sm font-bold text-neutral-700 hover:text-neutral-900 whitespace-nowrap">
                   Sign In
                 </p>
                 <BaseIconButton
                   icon="sign-in"
                   size="md"
-                  onClick={handleOnLoginClick}
-                  buttonClassName="block md:hidden min-w-[1.6rem]"
+                  buttonClassName="block min-w-[1.6rem]"
                 />
-              </>
+              </div>
             )}
             {isLoggedIn && (
               <AccountDropDown
@@ -75,13 +74,6 @@ const Header = ({ categories }) => {
           </div>
         </div>
       </Breakpoints>
-      {shouldShowComponent && (
-        <Breakpoints tag="div">
-          <div className="col-span-full col-start-1 flex sm:hidden items-center w-full">
-            <GlobalSearch mobile={true} />
-          </div>
-        </Breakpoints>
-      )}
     </header>
   )
 }

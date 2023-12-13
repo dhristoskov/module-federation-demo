@@ -1,14 +1,9 @@
-import Auth from '@/components/features/Auth/Auth'
+import dynamic from "next/dynamic";
 
-const Home = ({}) => {
-  return (
-    <main className="flex min-h-screen flex-col items-center">
-      Remote app
-      <div className="w-[27.5rem] border-2 border-neutral-200 shadow-md bg-white">
-        <Auth />
-      </div>
-    </main>
-  )
-}
-
-export default Home
+const HomePage = dynamic(() => import("home/Home"), {
+  ssr: false,
+  loading: () => <div>Loading...</div>,
+});
+const Home = HomePage;
+Home.getInitialProps = HomePage.getInitialProps;
+export default Home;

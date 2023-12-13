@@ -17,7 +17,7 @@ const AccountDropDown = ({ user, logout }) => {
   const onLogoutUser = () => {
     logout()
     setOpen(false)
-    router.replace('/')
+    router.push({ pathname: '/' }, undefined, { shallow: true })
   }
 
   return (

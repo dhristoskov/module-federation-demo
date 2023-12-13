@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@module-federation/nextjs-mf": "^7.0.8",
+    "@module-federation/utilities": "3.0.0",
     "@storybook/addon-essentials": "7.6.4",
     "@storybook/addon-interactions": "7.6.4",
     "@storybook/addon-links": "7.6.4",

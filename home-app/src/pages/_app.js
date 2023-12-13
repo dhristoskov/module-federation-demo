@@ -1,3 +1,5 @@
+import React from 'react'
+import App from 'next/app'
 import Head from 'next/head'
 import dynamic from 'next/dynamic'
 
@@ -5,18 +7,20 @@ import '@/styles/globals.css'
 
 const AuthContextProvider = dynamic(() => import('remote/storeAuth'), {
   ssr: false,
+  suspense: true,
 })
 
 const NotificationProvider = dynamic(() => import('remote/storeNotification'), {
   ssr: false,
+  suspense: true,
 })
 
-const App = ({ Component, pageProps }) => {
+const MyApp = ({ Component, pageProps }) => {
   return (
     <AuthContextProvider>
       <NotificationProvider>
         <Head>
-          <title>Module Federation Demo</title>
+          <title>Plushy shop - Module Federation Demo</title>
         </Head>
         <Component {...pageProps} />
       </NotificationProvider>
@@ -24,4 +28,10 @@ const App = ({ Component, pageProps }) => {
   )
 }
 
-export default App
+MyApp.getInitialProps = async (appContext) => {
+  const appProps = await App.getInitialProps(appContext)
+
+  return { ...appProps }
+}
+
+export default MyApp
