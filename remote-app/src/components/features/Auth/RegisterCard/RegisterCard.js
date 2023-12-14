@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import axios from '@/axios'
 
 import BaseInputField from '@/components/elements/BaseInputField/BaseInputField'
+import BaseForm from '@/components/elements/BaseForm/BaseForm'
 import Button from '@/components/elements/Button/Button'
 import { AuthContext } from '@/store/AuthContext'
 import { NotificationContext } from '@/store/NotificationContext'
@@ -82,8 +83,12 @@ const RegisterCard = () => {
   }
 
   return (
-    <div className="flex w-full flex-col items-center gap-1 p-4">
-      <div className='w-full flex flex-col gap-2 text-neutral-500 mb-2'>
+    <BaseForm
+      buttonTitle="Register"
+      formSubmit={onRegister}
+      formClass="flex w-full flex-col items-center gap-1 p-4"
+    >
+      <div className="w-full flex flex-col gap-2 text-neutral-500 mb-2">
         <p className="text-2xl font-semibold">Create your account</p>
         <p className="text-md font-bold">Registration is easy</p>
       </div>
@@ -120,20 +125,11 @@ const RegisterCard = () => {
         name="password"
         validation={passwordValidation}
       />
-      <Button
-        variant="primary"
-        spacingTop="4"
-        spacingBottom="2"
-        onClick={onRegister}
-        fullWidth={true}
-      >
-        Send
-      </Button>
       <p className="cursor-pointer text-sm mb-3">
         We may send you communications; you may change your preferences in your account settings. We'll never post
         without your permission.
       </p>
-    </div>
+    </BaseForm>
   )
 }
 

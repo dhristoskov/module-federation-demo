@@ -6,11 +6,11 @@ const IconTextTitle = ({ icon, text }) => {
     <div className="flex flex-row items-center gap-2">
       <BaseIcon
         icon={icon}
-        size="2xl"
+        size="lg"
       />
       <Typography
         tag="h3"
-        additionalClasses="text-slate-900 text-2xl font-bold"
+        additionalClasses="text-slate-900 text-lg font-bold"
       >
         {text}
       </Typography>

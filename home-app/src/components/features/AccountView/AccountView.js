@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from 'next/link'
 
 import BaseIcon from '@/components/elements/BaseIcon/BaseIcon'
 import Typography from '@/components/elements/Typography/Typography'
@@ -35,51 +34,30 @@ const ACCOUNT_VIEW_DATA = [
   },
   {
     id: 5,
-    title: 'Gift Cards & Top Up',
-    description: 'View balance or redeem a card and purchase a new Gift Card',
-    icon: 'coin',
-    slug: 'gift-cards',
-  },
-  {
-    id: 6,
     title: 'Message Centre',
     description: 'View or respond to messages from Sellers and Buyers',
     icon: 'mail',
     slug: 'messages',
   },
   {
-    id: 7,
-    title: 'Contact Us',
-    description: 'Browse self service options, help articles or contact us',
-    icon: 'headphone',
-    slug: 'contact',
-  },
-  {
-    id: 8,
+    id: 6,
     title: 'Your Favorites',
     description: 'View, modify and share your favorites',
     icon: 'heart',
     slug: 'favorites',
   },
-  {
-    id: 9,
-    title: 'Mobile App',
-    description: 'Download the our App',
-    icon: 'phone-holding',
-    slug: 'mobile-app',
-  },
 ]
 
-const AccountView = () => {
+const AccountView = ({ setSelected }) => {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-[8rem]">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
       {ACCOUNT_VIEW_DATA.map((item) => (
-        <Link
+        <div
           key={item.id}
-          href={{ pathname: `/account-settings/`, query: { option: item.slug } }}
-          className="flex items-center justify-between border-2 border-slate-900 p-8 shadow-xl rounded-2xl hover:bg-slate-200"
+          onClick={() => setSelected(item.slug)}
+          className="flex items-center justify-between border-2 border-slate-900 p-4 shadow-xl rounded-2xl hover:bg-slate-200 cursor-pointer"
         >
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3">
             <div className="flex items-center justify-center">
               <BaseIcon
                 icon={item.icon}
@@ -96,7 +74,7 @@ const AccountView = () => {
               <Typography additionalClasses="text-sm font-semibold text-gray-500">{item.description}</Typography>
             </div>
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   )

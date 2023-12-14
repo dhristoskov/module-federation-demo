@@ -28,12 +28,6 @@ const UserPaymentsForm = ({ id }) => {
   }
   return (
     <div className="max-w-[32rem] flex flex-col gap-3">
-      <Typography
-        tag="h3"
-        spacingBottom="text-2xl mb-6 font-bold text-gray-800"
-      >
-        Add payment options
-      </Typography>
       <BaseInputField
         type="text"
         label="Card number"

@@ -2,7 +2,7 @@ import { useContext, useState } from 'react'
 import axios from '@/axios'
 
 import BaseInputField from '@/components/elements/BaseInputField/BaseInputField'
-import Button from '@/components/elements/Button/Button'
+import BaseForm from '@/components/elements/BaseForm/BaseForm'
 
 import { AuthContext } from '@/store/AuthContext'
 import { NotificationContext } from '@/store/NotificationContext'
@@ -49,7 +49,11 @@ const LoginCard = () => {
   }
 
   return (
-    <div className="flex w-full flex-col items-center gap-1 p-4 mt-5">
+    <BaseForm
+      buttonTitle="Log-in"
+      formSubmit={onLogin}
+      formClass="flex w-full flex-col items-center gap-1 p-4 mt-5"
+    >
       <BaseInputField
         placeholder="Username"
         helpMessage="Help message"
@@ -78,19 +82,11 @@ const LoginCard = () => {
           Forgot your password?
         </p>
       </div>
-      <Button
-        variant="primary"
-        spacingBottom="2"
-        onClick={onLogin}
-        fullWidth={true}
-      >
-        Send
-      </Button>
       <p className="cursor-pointer text-sm mb-3">
         We may send you communications; you may change your preferences in your account settings. We'll never post
         without your permission.
       </p>
-    </div>
+    </BaseForm>
   )
 }
 

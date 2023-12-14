@@ -20,6 +20,8 @@ const UserAddressItem = ({ address, setReload, setEditAddress }) => {
 
   const setAsDefault = async () => {
     await setAsDefaultAddress(address._id, showNotification, setReload)
+    const customEvent = new CustomEvent('address-updated')
+    window.dispatchEvent(customEvent)
   }
 
   const toggleOpen = () => {

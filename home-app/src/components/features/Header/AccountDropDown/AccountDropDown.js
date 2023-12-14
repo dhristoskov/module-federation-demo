@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import BaseIconButton from '@/components/elements/BaseIconButton/BaseIconButton'
@@ -45,9 +44,6 @@ const AccountDropDown = ({ user, logout }) => {
           id="drop-down-container"
           className="absolute border-2 border-slate-200 w-full shadow-md z-20 top-8 right-0 bg-white min-w-[10rem]"
         >
-          <Link href="/account">
-            <p className={buttonStyles}>Account</p>
-          </Link>
           <p
             onClick={() => {}}
             className={buttonStyles}

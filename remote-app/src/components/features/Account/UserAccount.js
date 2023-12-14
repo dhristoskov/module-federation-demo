@@ -20,12 +20,8 @@ const UserAccount = ({ selected }) => {
         return <UserAddress id={user.id} />
       case 'payments':
         return <UserPaymentsForm id={user.id} />
-      case 'gift-cards':
-        return <div>Gift Cards</div>
       case 'messages':
         return <div>Messages</div>
-      case 'contact':
-        return <div>Contact</div>
       case 'favorites':
         return <div>Favorites</div>
     }
@@ -33,7 +29,7 @@ const UserAccount = ({ selected }) => {
 
   return (
     user && (
-      <div className="flex flex-col w-full my-20 min-h-[25rem]">
+      <div className="flex flex-col w-full">
         <div className="w-full">{renderSelected()}</div>
       </div>
     )

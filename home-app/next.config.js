@@ -42,8 +42,6 @@ const nextConfig = {
           './Home': './src/pages/index.js',
           './pages-map': './pages-map.js',
           './Checkout': './src/pages/checkout.js',
-          './Account': './src/pages/account.js',
-          './AccountSettings': './src/pages/account-settings.js',
         },
         shared: {
           // specify shared dependencies here
