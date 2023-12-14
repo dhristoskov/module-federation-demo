@@ -7,8 +7,11 @@ import BaseIconButton from '../BaseIconButton/BaseIconButton'
 const Modal = ({ children, onClose, isOpen, account = false }) => {
   const [mounted, setMounted] = React.useState(false)
   const modalStyles = `xs:w-[95%] sm:w-[27.5rem] absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-neutral-200 shadow-2xl bg-white rounded-xl`
-  const accountModalStyles = `w-[85%] fixed z-20 bottom-0 inset-x-0 mx-auto border-2 border-neutral-200 shadow-2xl bg-white max-h-[85%] overflow-y-scroll`
+  const accountModalStyles = `xs:w-[90%] lg:w-[80%] fixed z-20 bottom-0 inset-x-0 mx-auto border-2 border-neutral-200 shadow-2xl bg-white max-h-[85%] overflow-y-scroll`
+  const closeIconStyles = `absolute -top-7 -right-2`
+  const closeIconAccountStyles = `absolute top-2 right-2`
   const modalClasses = account ? accountModalStyles : modalStyles
+  const closeIconClasses = account ? closeIconAccountStyles : closeIconStyles
 
   useEffect(() => setMounted(true), [])
 
@@ -29,8 +32,8 @@ const Modal = ({ children, onClose, isOpen, account = false }) => {
             onClose={onClose}
           />
           <div className={modalClasses}>
-            {!account && (
-              <div className="absolute -top-7 -right-2">
+            {true && (
+              <div className={closeIconClasses}>
                 <BaseIconButton
                   icon="close"
                   size="lg"

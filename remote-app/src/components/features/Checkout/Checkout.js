@@ -81,7 +81,7 @@ const Checkout = ({ isLoggedIn, setSelectedOptions, continueShopping, setIsBaske
   }, [basketItems])
 
   return (
-    <section className="flex flex-col">
+    <div className="flex flex-col">
       <Typography additionalClasses="text-xl font-bold text-slate-900 mb-6">In your Cart:</Typography>
       <div className="flex flex-col gap-3">
         {basketItems?.products?.length == 0 && (
@@ -119,7 +119,7 @@ const Checkout = ({ isLoggedIn, setSelectedOptions, continueShopping, setIsBaske
           deleteOptionFromBasket={deleteOptionFromBasket}
         />
       )}
-    </section>
+    </div>
   )
 }
 

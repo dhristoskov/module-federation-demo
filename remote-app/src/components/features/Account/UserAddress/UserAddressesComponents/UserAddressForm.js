@@ -113,7 +113,7 @@ const UserAddressForm = ({ id, editAddress, setEditAddress, setReload }) => {
   }, [editAddress])
 
   return (
-    <div className="max-w-[32rem] flex flex-col gap-1">
+    <div className="xs:w-full md:max-w-[32rem] flex flex-col gap-1">
       {Object.keys(editAddress).length !== 0 ? (
         <div className="w-full flex justify-end">
           <p

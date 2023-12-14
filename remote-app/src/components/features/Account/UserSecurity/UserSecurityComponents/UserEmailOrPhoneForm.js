@@ -50,7 +50,7 @@ const UserEmailOrPhoneForm = ({ id, type, userInfo, setReload }) => {
 
   return (
     <BaseForm
-      formClass="max-w-[32rem] flex flex-col gap-1"
+      formClass="xs:w-full md:max-w-[32rem] flex flex-col gap-1"
       buttonTitle="Update"
       formSubmit={onUpdate}
     >

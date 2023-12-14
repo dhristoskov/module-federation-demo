@@ -40,9 +40,6 @@ const Products = ({ options }) => {
               />
             )}
           </div>
-          <div className="flex flex-col flex-1">
-            <p>Payment</p>
-          </div>
         </section>
       </section>
     </MainLayout>

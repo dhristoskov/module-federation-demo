@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 
-import Typography from '@/components/elements/Typography/Typography'
+import BaseForm from '@/components/elements/BaseForm/BaseForm'
 import BaseInputField from '@/components/elements/BaseInputField/BaseInputField'
-import Button from '@/components/elements/Button/Button'
 
 import 'tailwindcss/tailwind.css'
 
@@ -27,17 +26,21 @@ const UserPaymentsForm = ({ id }) => {
     console.log('onPayOptionsUpdate')
   }
   return (
-    <div className="max-w-[32rem] flex flex-col gap-3">
+    <BaseForm
+      buttonTitle="Add/Update Payment"
+      formSubmit={onPayOptionsUpdate}
+      formClass="xs:w-full md:max-w-[32rem] flex flex-col gap-1"
+    >
       <BaseInputField
         type="text"
-        label="Card number"
+        placeholder="Card number"
         name="card_number"
         value={card_number}
         onChange={onOptionChange}
       />
       <BaseInputField
         type="text"
-        label="Card owner"
+        placeholder="Card owner"
         name="card_owner"
         value={card_owner}
         onChange={onOptionChange}
@@ -45,27 +48,20 @@ const UserPaymentsForm = ({ id }) => {
       <div className="flex flex-col md:flex-row gap-2 w-full">
         <BaseInputField
           type="text"
-          label="Card expiration date"
+          placeholder="Card expiration date"
           name="card_expiration_date"
           value={card_expiration_date}
           onChange={onOptionChange}
         />
         <BaseInputField
           type="text"
-          label="Card CVC"
+          placeholder="Card CVC"
           name="card_cvc"
           value={card_cvc}
           onChange={onOptionChange}
         />
       </div>
-      <Button
-        variant="primary"
-        fullWidth={true}
-        onClick={onPayOptionsUpdate}
-      >
-        Update Payment
-      </Button>
-    </div>
+    </BaseForm>
   )
 }
 

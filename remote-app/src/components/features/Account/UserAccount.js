@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 
+import UserOrders from './UserOreders/UserOrders'
 import UserAddress from './UserAddress/UserAddress'
 import UserSecurity from './UserSecurity/UserSecurity'
 import UserPaymentsForm from './UserPayments/UserPaymentsForm'
@@ -13,7 +14,7 @@ const UserAccount = ({ selected }) => {
   const renderSelected = () => {
     switch (selected) {
       case 'orders':
-        return <div>Orders</div>
+        return <UserOrders />
       case 'security':
         return <UserSecurity id={user.id} />
       case 'addresses':

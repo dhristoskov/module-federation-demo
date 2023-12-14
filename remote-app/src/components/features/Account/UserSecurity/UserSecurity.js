@@ -61,7 +61,7 @@ const UserSecurity = ({ id }) => {
 
   return (
     <div className="flex flex-col md:flex-row gap-8 w-full">
-      <div className="md:w-6/12 w-full">{renderSelected()}</div>
+      <div className="xs:w-full md:w-6/12 w-full">{renderSelected()}</div>
       <UserSecurityInfo
         setSelected={setSelected}
         userInfo={userInfo}
