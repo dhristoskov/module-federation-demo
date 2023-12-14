@@ -50,13 +50,19 @@ const MainLayout = ({ tag = 'section', children, categories }) => {
 
   return (
     <>
-      {auth && (
-        <Modal onClose={onModalClose}>
-          <Auth />
-        </Modal>
-      )}
+      <Modal
+        isOpen={auth}
+        onClose={onModalClose}
+      >
+        <Auth />
+      </Modal>
       {isLoggedIn && <AccountCtA onClick={toggleAccountModal} />}
-      {showAccountModal && isLoggedIn && <AccountModal onClick={toggleAccountModal} />}
+      {isLoggedIn && (
+        <AccountModal
+          isOpen={showAccountModal}
+          onClick={toggleAccountModal}
+        />
+      )}
       <main className="relative">
         <Notification activeNotification={activeNotification} />
         <Header categories={categories} />

@@ -106,7 +106,9 @@ const Checkout = ({ isLoggedIn, setSelectedOptions, continueShopping, setIsBaske
       </div>
       <div className="flex flex-row justify-between items-center w-full max-w-[38rem] mt-10 border-t-2 border-slate-900 pt-2">
         <Typography additionalClasses="text-md text-slate-500">
-          {basketItems?.finalTotalPrice > 0 && basketItems?.products.length > 0 ? 'Cart Sub-Total' : 'Cart Total'}
+          {basketItems?.finalTotalPrice > 0 && basketItems?.products.length > 0 && basketItems?.options?.length > 0
+            ? 'Cart Sub-Total'
+            : 'Cart Total'}
         </Typography>
         <Typography additionalClasses="text-md font-bold text-slate-900">€ {basketItems?.totalPrice}</Typography>
       </div>

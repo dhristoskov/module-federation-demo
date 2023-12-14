@@ -5,7 +5,11 @@ const deleteOptionLocalStorage = (id) => {
   const optionIndex = basket.options.findIndex((p) => p.id === id)
   const optionToDelete = basket.options[optionIndex]
   const oldFinalTotalPrice = parseFloat(basket.finalTotalPrice)
-  const newFinalTotalPrice = (oldFinalTotalPrice - optionToDelete.price).toFixed(2)
+  let newFinalTotalPrice = (oldFinalTotalPrice - optionToDelete.price).toFixed(2)
+
+  if (newFinalTotalPrice === basket?.totalPrice) {
+    newFinalTotalPrice = 0
+  }
 
   localStorage.setItem(
     'basket',
