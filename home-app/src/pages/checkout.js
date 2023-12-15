@@ -12,6 +12,11 @@ const Checkout = dynamic(() => import('remote/Checkout'), {
   suspense: true,
 })
 
+const CheckoutUserInfo = dynamic(() => import('remote/CheckoutUserInfo'), {
+  ssr: false,
+  suspense: true,
+})
+
 const Products = ({ options }) => {
   const [selectedOptions, setSelectedOptions] = useState([])
   const [isBasketEmpty, setIsBasketEmpty] = useState(true)
@@ -25,7 +30,7 @@ const Products = ({ options }) => {
   return (
     <MainLayout>
       <section className="col-span-full col-start-1">
-        <section className="flex">
+        <section className="flex flex-col md:flex-row gap-5">
           <div className="flex flex-col flex-1 min-h-[36rem]">
             <Checkout
               isLoggedIn={isLoggedIn}
@@ -39,6 +44,9 @@ const Products = ({ options }) => {
                 selectedOptions={selectedOptions}
               />
             )}
+          </div>
+          <div className="flex flex-col flex-1">
+            <CheckoutUserInfo />
           </div>
         </section>
       </section>

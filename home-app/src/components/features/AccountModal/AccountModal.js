@@ -4,8 +4,7 @@ import Modal from '@/components/elements/Modal/Modal'
 import AccountView from '../AccountView/AccountView'
 import AccountSettings from '../AccountView/AccountSettings'
 
-const AccountModal = ({ onClick, isOpen }) => {
-  const [selected, setSelected] = useState(null)
+const AccountModal = ({ onClick, isOpen, selected, setSelected }) => {
   return (
     <Modal
       account={true}

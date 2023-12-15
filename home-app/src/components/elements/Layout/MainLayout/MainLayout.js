@@ -21,6 +21,7 @@ const MainLayout = ({ tag = 'section', children, categories }) => {
   const { activeNotification } = useContext(NotificationContext)
   const { isLoggedIn } = useContext(AuthContext)
   const [auth, setAuth] = useState(false)
+  const [selected, setSelected] = useState(null)
   const [showAccountModal, setShowAccountModal] = useState(false)
 
   const Tag = tag
@@ -30,6 +31,9 @@ const MainLayout = ({ tag = 'section', children, categories }) => {
   }
 
   const toggleAccountModal = () => {
+    if (selected !== null) {
+      setSelected(null)
+    }
     setShowAccountModal(!showAccountModal)
   }
 
@@ -59,6 +63,8 @@ const MainLayout = ({ tag = 'section', children, categories }) => {
       {isLoggedIn && <AccountCtA onClick={toggleAccountModal} />}
       {isLoggedIn && (
         <AccountModal
+          selected={selected}
+          setSelected={setSelected}
           isOpen={showAccountModal}
           onClick={toggleAccountModal}
         />
