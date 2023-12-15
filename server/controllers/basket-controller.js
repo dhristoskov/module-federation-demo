@@ -45,6 +45,7 @@ const addProductToBasket = async (req, res, next) => {
   if (!existingUser.basket) {
     const basket = new Basket({
       products: [],
+      // options: [],
       user: userId,
     });
 
@@ -191,6 +192,10 @@ const removeAllProducts = async (req, res, next) => {
 
   res.status(200).json({ message: "Basket cleared!" });
 };
+
+// const addOptionToBasket = async (req, res, next) => {};
+
+// const deleteOptionFromBasket = async (req, res, next) => {};
 
 const deleteProductFromBasket = async (req, res, next) => {
   const productId = req.params.id;

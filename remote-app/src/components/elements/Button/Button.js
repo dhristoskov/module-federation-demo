@@ -1,3 +1,5 @@
+import React from 'react'
+
 import 'tailwindcss/tailwind.css'
 
 const Button = ({ href, disabled, variant, children, onClick, spacingTop, spacingBottom, fullWidth }) => {

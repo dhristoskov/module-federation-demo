@@ -4,6 +4,8 @@ import Typography from '@/components/elements/Typography/Typography'
 import addOptionInLocalStorage from './utils/addOptionInLocalStorage'
 import { NotificationContext } from '@/store/NotificationContext'
 
+import 'tailwindcss/tailwind.css'
+
 const AddOption = ({ title, option }) => {
   const { showNotification } = useContext(NotificationContext)
   const formattedOption = {

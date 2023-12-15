@@ -2,6 +2,8 @@ import React from 'react'
 
 import BaseIcon from '../BaseIcon/BaseIcon'
 
+import 'tailwindcss/tailwind.css'
+
 const BaseIconButton = ({ icon, size, onClick, onMouseEnter, onMouseLeave, buttonClassName }) => {
   return (
     <div

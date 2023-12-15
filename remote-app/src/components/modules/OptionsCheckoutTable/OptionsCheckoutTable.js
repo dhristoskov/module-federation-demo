@@ -3,6 +3,8 @@ import Image from 'next/image'
 
 import Typography from '@/components/elements/Typography/Typography'
 
+import 'tailwindcss/tailwind.css'
+
 const OptionsCheckoutTable = ({ options, price, deleteOptionFromBasket }) => {
   return (
     options?.length > 0 && (

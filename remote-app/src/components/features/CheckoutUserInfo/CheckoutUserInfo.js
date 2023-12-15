@@ -3,6 +3,8 @@ import React from 'react'
 import CheckoutBuyerInfo from './components/CheckoutBuyerInfo'
 import Typography from '@/components/elements/Typography/Typography'
 
+import 'tailwindcss/tailwind.css'
+
 const CheckoutUserInfo = ({ isLoggedIn }) => {
   return (
     <div className="flex flex-col">

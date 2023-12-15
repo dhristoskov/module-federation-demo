@@ -12,11 +12,11 @@ import getBasketFromLocalStorage from '../Basket/utils/getBasketFromLocalStorage
 import deleteItemLocalStorage from '../Basket/utils/deleteItemLocalStorage'
 import changeQuantityLocalStorage from '../Basket/utils/changeQuantityLocalStorage'
 import deleteOptionLocalStorage from '../Basket/utils/deleteOptionLocalStorage'
+import EmptyBasket from '@/components/modules/BasketProducts/components/EmptyBasket'
 
 import { NotificationContext } from '@/store/NotificationContext'
 
 import 'tailwindcss/tailwind.css'
-import EmptyBasket from '@/components/modules/BasketProducts/components/EmptyBasket'
 
 const Checkout = ({ isLoggedIn, setSelectedOptions, continueShopping, setIsBasketEmpty }) => {
   const { showNotification } = useContext(NotificationContext)

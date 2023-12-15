@@ -4,6 +4,8 @@ import BaseForm from '@/components/elements/BaseForm/BaseForm'
 import BaseInputField from '@/components/elements/BaseInputField/BaseInputField'
 import Typography from '@/components/elements/Typography/Typography'
 
+import 'tailwindcss/tailwind.css'
+
 const CheckoutBuyerInfo = () => {
   const [createAccount, setCreateAccount] = useState(false)
   const [buyerInfo, setBuyerInfo] = useState({

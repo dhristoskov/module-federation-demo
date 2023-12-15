@@ -1,3 +1,5 @@
+import React from 'react'
+
 import 'tailwindcss/tailwind.css'
 
 const Typography = ({ tag = 'p', children, spacingTop, spacingBottom, casting, additionalClasses }) => {

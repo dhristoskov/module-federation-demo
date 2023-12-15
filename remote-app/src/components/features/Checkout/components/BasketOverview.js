@@ -3,6 +3,8 @@ import Image from 'next/image'
 
 import Typography from '@/components/elements/Typography/Typography'
 
+import 'tailwindcss/tailwind.css'
+
 const BasketOverview = ({ product, deleteItemFromBasket, changeQuantity }) => {
   return (
     <div className="w-full max-w-[38rem] flex justify-between items-center py-2 px-4 gap-4 shadow-xl">
