@@ -52,6 +52,71 @@ const CheckoutBuyerInfo = () => {
     console.log(createAccount)
   }
 
+  const firstNameValidation = {
+    value: buyerInfo.first_name,
+    validators: [{ validator: 'isAlphabetical', message: 'First name must be alphabetical' }],
+  }
+
+  const lastNameValidation = {
+    value: buyerInfo.last_name,
+    validators: [{ validator: 'isAlphabetical', message: 'Last name must be alphabetical' }],
+  }
+
+  const countryValidation = {
+    value: buyerInfo.country,
+    validators: [{ validator: 'isAlphabetical', message: 'Country must be alphabetical' }],
+  }
+
+  const streetValidation = {
+    value: buyerInfo.street,
+    validators: [{ validator: 'minLength', minLength: 3, message: 'Street must be at least 3 characters long' }],
+  }
+
+  const streetNumberValidation = {
+    value: buyerInfo.street_number,
+    validators: [{ validator: 'isAlphanumeric', message: 'Street number must be alphanumeric' }],
+  }
+
+  const cityValidation = {
+    value: buyerInfo.city,
+    validators: [{ validator: 'isAlphabetical', message: 'City must be alphabetical' }],
+  }
+
+  const postalCodeValidation = {
+    value: buyerInfo.postal_code,
+    validators: [{ validator: 'isAlphanumeric', message: 'Postal code must be alphanumeric' }],
+  }
+
+  const emailValidation = {
+    value: buyerInfo.email,
+    validators: [{ validator: 'isEmail', message: 'Email must be valid' }],
+  }
+
+  const passwordValidation = {
+    value: buyerInfo.password,
+    validators: [{ validator: 'minLength', minLength: 6, message: 'Password must be at least 6 characters long' }],
+  }
+
+  const confirmPasswordValidation = {
+    value: buyerInfo.confirm_password,
+    validators: [{ validator: 'minLength', minLength: 6, message: 'Password must be at least 6 characters long' }],
+  }
+
+  const cardNumberValidation = {
+    value: buyerInfo.card_number,
+    validators: [{ validator: 'isInteger', message: 'Card number must be numeric' }],
+  }
+
+  const cardExpirationDateValidation = {
+    value: buyerInfo.card_expiration_date,
+    validators: [{ validator: 'isDate', message: 'Card expiration date in format mm/yyyy' }],
+  }
+
+  const cardCVCValidation = {
+    value: buyerInfo.card_cvc,
+    validators: [{ validator: 'isInteger', message: 'Card CVC must be numeric' }],
+  }
+
   return (
     <BaseForm
       buttonTitle="Place order"
@@ -64,12 +129,14 @@ const CheckoutBuyerInfo = () => {
           name="first_name"
           value={first_name}
           onChange={onChange}
+          validation={firstNameValidation}
         />
         <BaseInputField
           placeholder="Last name"
           name="last_name"
           value={last_name}
           onChange={onChange}
+          validation={lastNameValidation}
         />
       </div>
       <BaseInputField
@@ -77,6 +144,7 @@ const CheckoutBuyerInfo = () => {
         name="country"
         value={country}
         onChange={onChange}
+        validation={countryValidation}
       />
       <div className="flex flex-col md:flex-row gap-2 w-full">
         <BaseInputField
@@ -84,12 +152,14 @@ const CheckoutBuyerInfo = () => {
           name="street"
           value={street}
           onChange={onChange}
+          validation={streetValidation}
         />
         <BaseInputField
           placeholder="Str. No."
           name="street_number"
           value={street_number}
           onChange={onChange}
+          validation={streetNumberValidation}
         />
       </div>
       <div className="flex flex-col md:flex-row gap-2 w-full">
@@ -98,12 +168,14 @@ const CheckoutBuyerInfo = () => {
           name="city"
           value={city}
           onChange={onChange}
+          validation={cityValidation}
         />
         <BaseInputField
           placeholder="Postal Code"
           name="postal_code"
           value={postal_code}
           onChange={onChange}
+          validation={postalCodeValidation}
         />
       </div>
       <BaseInputField
@@ -117,6 +189,7 @@ const CheckoutBuyerInfo = () => {
         name="email"
         value={email}
         onChange={onChange}
+        validation={emailValidation}
       />
       <div className="flex gap-2 items-center w-full mb-4">
         <input
@@ -130,16 +203,20 @@ const CheckoutBuyerInfo = () => {
       {createAccount && (
         <>
           <BaseInputField
+            type="password"
             placeholder="Password"
             name="password"
             value={password}
             onChange={onChange}
+            validation={passwordValidation}
           />
           <BaseInputField
+            type="password"
             placeholder="Confirm password"
             name="confirm_password"
             value={confirm_password}
             onChange={onChange}
+            validation={confirmPasswordValidation}
           />
         </>
       )}
@@ -147,26 +224,26 @@ const CheckoutBuyerInfo = () => {
         <Typography additionalClasses="text-xl font-bold text-slate-900 mb-4 mt-8">Biling details:</Typography>
       </div>
       <BaseInputField
-        type="text"
         placeholder="Card number"
         name="card_number"
         value={card_number}
         onChange={onChange}
+        validation={cardNumberValidation}
       />
       <div className="flex flex-col md:flex-row gap-2 w-full">
         <BaseInputField
-          type="text"
-          placeholder="Card expiration date"
+          placeholder="Card expiration date (mm/yyyy)"
           name="card_expiration_date"
           value={card_expiration_date}
           onChange={onChange}
+          validation={cardExpirationDateValidation}
         />
         <BaseInputField
-          type="text"
           placeholder="Card CVC"
           name="card_cvc"
           value={card_cvc}
           onChange={onChange}
+          validation={cardCVCValidation}
         />
       </div>
       <div className="flex gap-2 items-center w-full mb-4 mt-8">
