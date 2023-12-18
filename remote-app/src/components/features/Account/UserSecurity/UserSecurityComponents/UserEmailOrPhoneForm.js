@@ -1,15 +1,14 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import BaseForm from '@/components/elements/BaseForm/BaseForm'
 import editUserEmail from '../../utils/editUserEmail'
 import editPhoneNumber from '../../utils/editPhoneNumber'
 import BaseInputField from '@/components/elements/BaseInputField/BaseInputField'
-import { NotificationContext } from '@/store/NotificationContext'
+import addNotification from '@/components/features/Basket/utils/addNotification'
 
 import 'tailwindcss/tailwind.css'
 
 const UserEmailOrPhoneForm = ({ id, type, userInfo, setReload }) => {
-  const { showNotification } = useContext(NotificationContext)
   const [email, setEmail] = useState('')
   const [phone_number, setPhoneNumber] = useState('')
 
@@ -35,10 +34,10 @@ const UserEmailOrPhoneForm = ({ id, type, userInfo, setReload }) => {
     if (!id) return
     switch (type) {
       case 'email':
-        editUserEmail(id, email, showNotification, setReload)
+        editUserEmail(id, email, addNotification, setReload)
         break
       case 'phone_number':
-        editPhoneNumber(id, phone_number, showNotification, setReload)
+        editPhoneNumber(id, phone_number, addNotification, setReload)
         break
       default:
         throw new Error('Invalid type')

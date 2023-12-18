@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Typography from '@/components/elements/Typography/Typography'
+import addNotification from '../Basket/utils/addNotification'
 import BasketOverview from './components/BasketOverview'
 import OptionsCheckoutTable from '@/components/modules/OptionsCheckoutTable/OptionsCheckoutTable'
 
@@ -14,12 +15,9 @@ import changeQuantityLocalStorage from '../Basket/utils/changeQuantityLocalStora
 import deleteOptionLocalStorage from '../Basket/utils/deleteOptionLocalStorage'
 import EmptyBasket from '@/components/modules/BasketProducts/components/EmptyBasket'
 
-import { NotificationContext } from '@/store/NotificationContext'
-
 import 'tailwindcss/tailwind.css'
 
 const Checkout = ({ isLoggedIn, setSelectedOptions, continueShopping, setIsBasketEmpty }) => {
-  const { showNotification } = useContext(NotificationContext)
   const [recheckBasket, setRecheckBasket] = useState(false)
   const [basketItems, setBasketItems] = useState({
     products: [],
@@ -32,16 +30,16 @@ const Checkout = ({ isLoggedIn, setSelectedOptions, continueShopping, setIsBaske
     if (!isLoggedIn) {
       deleteItemLocalStorage(product.id)
       setRecheckBasket(!recheckBasket)
-      showNotification({ message: 'Item was deleted!', type: 'success' })
+      addNotification({ message: 'Item was deleted!', type: 'success' })
     } else {
-      await deleteItemAPI(product._id, showNotification, setRecheckBasket)
+      await deleteItemAPI(product._id, addNotification, setRecheckBasket)
     }
   }
 
   const deleteOptionFromBasket = async (option) => {
     deleteOptionLocalStorage(option.id)
     setRecheckBasket(!recheckBasket)
-    showNotification({ message: 'Option was deleted!', type: 'success' })
+    addNotification({ message: 'Option was deleted!', type: 'success' })
   }
 
   const changeQuantity = async (product, direction) => {
@@ -49,11 +47,11 @@ const Checkout = ({ isLoggedIn, setSelectedOptions, continueShopping, setIsBaske
       changeQuantityLocalStorage(product, direction)
       setRecheckBasket(!recheckBasket)
       direction === 'plus'
-        ? showNotification({ message: 'Quantity was increased!', type: 'success' })
-        : showNotification({ message: 'Quantity was decreased!', type: 'success' })
+        ? addNotification({ message: 'Quantity was increased!', type: 'success' })
+        : addNotification({ message: 'Quantity was decreased!', type: 'success' })
       return
     } else {
-      await changeQuantityAPI(product._id, direction, showNotification, setRecheckBasket)
+      await changeQuantityAPI(product._id, direction, addNotification, setRecheckBasket)
     }
   }
 
@@ -70,7 +68,7 @@ const Checkout = ({ isLoggedIn, setSelectedOptions, continueShopping, setIsBaske
     if (!isLoggedIn) {
       getBasketFromLocalStorage(setBasketItems, setRecheckBasket)
     } else {
-      getBasketAPI(setBasketItems, showNotification, setRecheckBasket)
+      getBasketAPI(setBasketItems, addNotification, setRecheckBasket)
     }
   }, [recheckBasket])
 

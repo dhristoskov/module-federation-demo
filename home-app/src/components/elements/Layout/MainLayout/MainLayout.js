@@ -9,7 +9,6 @@ import InfoHeader from '@/components/features/InfoHeader/InfoHeader'
 import Modal from '@/components/elements/Modal/Modal'
 import AccountCtA from '@/components/modules/AccountCtA/AccountCtA'
 import AccountModal from '@/components/features/AccountModal/AccountModal'
-import { NotificationContext } from 'remote/storeNotification'
 import { AuthContext } from 'remote/storeAuth'
 
 const Auth = dynamic(() => import('remote/Auth'), {
@@ -18,13 +17,11 @@ const Auth = dynamic(() => import('remote/Auth'), {
 })
 
 const MainLayout = ({ tag = 'section', children, categories }) => {
-  const { activeNotification } = useContext(NotificationContext)
   const { isLoggedIn } = useContext(AuthContext)
   const [auth, setAuth] = useState(false)
   const [selected, setSelected] = useState(null)
   const [showAccountModal, setShowAccountModal] = useState(false)
-
-  const Tag = tag
+  const [activeNotification, setActiveNotification] = useState(null)
 
   const onModalClose = () => {
     setAuth(false)
@@ -52,6 +49,22 @@ const MainLayout = ({ tag = 'section', children, categories }) => {
     }
   }, [isLoggedIn])
 
+  useEffect(() => {
+    window.addEventListener('addNotification', () => {
+      const notification = JSON.parse(localStorage.getItem('MFDnotification'))
+      if (notification) {
+        setActiveNotification(notification)
+        setTimeout(() => {
+          localStorage.removeItem('MFDnotification')
+          setActiveNotification(null)
+        }, 3000)
+      }
+    })
+    return () => {
+      window.removeEventListener('addNotification', () => {})
+    }
+  }, [])
+
   return (
     <>
       <Modal
@@ -70,7 +83,7 @@ const MainLayout = ({ tag = 'section', children, categories }) => {
         />
       )}
       <main className="relative">
-        <Notification activeNotification={activeNotification} />
+        {activeNotification && <Notification activeNotification={activeNotification || {}} />}
         <Header categories={categories} />
         <InfoHeader />
         <section className="my-16">

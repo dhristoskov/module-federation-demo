@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import getUserInformation from '../utils/getUserInformation'
 import UserSecurityInfo from './UserSecurityComponents/UserSecurityInfo'
 import UserSecurityForm from './UserSecurityComponents/UserSecurityForm'
 import UserEmailOrPhoneForm from './UserSecurityComponents/UserEmailOrPhoneForm'
-import { NotificationContext } from '@/store/NotificationContext'
+import addNotification from '../../Basket/utils/addNotification'
 
 import 'tailwindcss/tailwind.css'
 
 const UserSecurity = ({ id }) => {
-  const { showNotification } = useContext(NotificationContext)
   const [selected, setSelected] = useState('')
   const [reload, setReload] = useState(false)
   const [userInfo, setUserInfo] = useState({
@@ -20,7 +19,7 @@ const UserSecurity = ({ id }) => {
 
   useEffect(() => {
     if (!id) return
-    getUserInformation(id, setUserInfo, showNotification, setReload)
+    getUserInformation(id, setUserInfo, addNotification, setReload)
   }, [reload])
 
   const renderSelected = () => {

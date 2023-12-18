@@ -1,9 +1,9 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 
 import Typography from '@/components/elements/Typography/Typography'
 import deleteSelectedAddress from '../../utils/deleteSelectedAddress'
 import setAsDefaultAddress from '../../utils/setAsDefaultAddress'
-import { NotificationContext } from '@/store/NotificationContext'
+import addNotification from '@/components/features/Basket/utils/addNotification'
 
 import 'tailwindcss/tailwind.css'
 
@@ -11,15 +11,14 @@ const UserAddressItem = ({ address, setReload, setEditAddress }) => {
   const buttonStyles = 'cursor-pointer bg-white transition-colors duration-150 ease-in-out hover:bg-slate-400 px-2 py-1'
   const selected = address.selected_status ? 'bg-slate-300' : 'bg-white'
 
-  const { showNotification } = useContext(NotificationContext)
   const [open, setOpen] = useState(false)
 
   const deleteItem = async () => {
-    await deleteSelectedAddress(address._id, showNotification, setReload)
+    await deleteSelectedAddress(address._id, addNotification, setReload)
   }
 
   const setAsDefault = async () => {
-    await setAsDefaultAddress(address._id, showNotification, setReload)
+    await setAsDefaultAddress(address._id, addNotification, setReload)
     const customEvent = new CustomEvent('address-updated')
     window.dispatchEvent(customEvent)
   }

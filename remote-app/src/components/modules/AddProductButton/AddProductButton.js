@@ -1,12 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
 import setProductsInLocalStorage from './utils/setProductsInLocalStorage'
+import addNotification from '@/components/features/Basket/utils/addNotification'
 import addToBasketAPI from './utils/addToBasketAPI'
-import { NotificationContext } from '@/store/NotificationContext'
 
 const AddProductButton = ({ title, product, isLoggedIn }) => {
-  const { showNotification } = useContext(NotificationContext)
-
   const addToBasket = async () => {
     const newPrice = product?.onSale
       ? (product.price - (product?.price * product.discount) / 100).toFixed(2)
@@ -18,9 +16,9 @@ const AddProductButton = ({ title, product, isLoggedIn }) => {
     }
     if (!isLoggedIn) {
       setProductsInLocalStorage(productToBasket)
-      showNotification({ message: 'Product added to basket!', type: 'success' })
+      addNotification({ message: 'Product added to basket!', type: 'success' })
     } else {
-      await addToBasketAPI({ ...productToBasket, price: newPrice }, showNotification)
+      await addToBasketAPI({ ...productToBasket, price: newPrice }, addNotification)
     }
   }
 

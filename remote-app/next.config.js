@@ -37,7 +37,6 @@ const nextConfig = {
           './Address': './src/components/features/Address/Address',
           './Basket': './src/components/features/Basket/Basket',
           './storeAuth': './src/store/AuthContext',
-          './storeNotification': './src/store/NotificationContext',
           './AddProductButton': './src/components/modules/AddProductButton/AddProductButton',
           './AddOption': './src/components/modules/AddOption/AddOption',
           './Checkout': './src/components/features/Checkout/Checkout',

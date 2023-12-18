@@ -3,15 +3,14 @@ import axios from '@/axios'
 
 import BaseInputField from '@/components/elements/BaseInputField/BaseInputField'
 import BaseForm from '@/components/elements/BaseForm/BaseForm'
+import addNotification from '../../Basket/utils/addNotification'
 
 import { AuthContext } from '@/store/AuthContext'
-import { NotificationContext } from '@/store/NotificationContext'
 
 import 'tailwindcss/tailwind.css'
 
 const LoginCard = () => {
   const { login } = useContext(AuthContext)
-  const { showNotification } = useContext(NotificationContext)
   const [user_name, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -39,12 +38,12 @@ const LoginCard = () => {
       }
 
       login(token, user)
-      showNotification({ message: `User ${username} logged in!`, type: 'success' })
+      addNotification({ message: `User ${username} logged in!`, type: 'success' })
 
       setUsername('')
       setPassword('')
     } catch (err) {
-      showNotification({ message: err?.response?.data?.message, type: 'error' })
+      addNotification({ message: err?.response?.data?.message, type: 'error' })
     }
   }
 

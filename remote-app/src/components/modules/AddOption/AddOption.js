@@ -1,13 +1,12 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
 import Typography from '@/components/elements/Typography/Typography'
 import addOptionInLocalStorage from './utils/addOptionInLocalStorage'
-import { NotificationContext } from '@/store/NotificationContext'
+import addNotification from '@/components/features/Basket/utils/addNotification'
 
 import 'tailwindcss/tailwind.css'
 
 const AddOption = ({ title, option }) => {
-  const { showNotification } = useContext(NotificationContext)
   const formattedOption = {
     id: option.id,
     description: option?.attributes?.description,
@@ -18,7 +17,7 @@ const AddOption = ({ title, option }) => {
   }
   const handleAddOption = () => {
     addOptionInLocalStorage(formattedOption)
-    showNotification({ message: 'Option added to basket!', type: 'success' })
+    addNotification({ message: 'Option added to basket!', type: 'success' })
 
     const event = new CustomEvent('addOption')
     window.dispatchEvent(event)

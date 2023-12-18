@@ -10,20 +10,13 @@ const AuthContextProvider = dynamic(() => import('remote/storeAuth'), {
   suspense: true,
 })
 
-const NotificationProvider = dynamic(() => import('remote/storeNotification'), {
-  ssr: false,
-  suspense: true,
-})
-
 const MyApp = ({ Component, pageProps }) => {
   return (
     <AuthContextProvider>
-      <NotificationProvider>
-        <Head>
-          <title>Plushy shop - Module Federation Demo</title>
-        </Head>
-        <Component {...pageProps} />
-      </NotificationProvider>
+      <Head>
+        <title>Plushy shop - Module Federation Demo</title>
+      </Head>
+      <Component {...pageProps} />
     </AuthContextProvider>
   )
 }

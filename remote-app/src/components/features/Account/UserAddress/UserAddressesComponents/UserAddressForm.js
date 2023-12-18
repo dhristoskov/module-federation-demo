@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Button from '@/components/elements/Button/Button'
 import BaseInputField from '@/components/elements/BaseInputField/BaseInputField'
 import addNewAddress from '../../utils/addNewAddress'
 import editUserAddress from '../../utils/editUserAddress'
-import { NotificationContext } from '@/store/NotificationContext'
+import addNotification from '@/components/features/Basket/utils/addNotification'
 
 import 'tailwindcss/tailwind.css'
 
 const UserAddressForm = ({ id, editAddress, setEditAddress, setReload }) => {
-  const { showNotification } = useContext(NotificationContext)
   const [userAddresses, setUserAddresses] = useState({
     street: '',
     city: '',
@@ -64,7 +63,7 @@ const UserAddressForm = ({ id, editAddress, setEditAddress, setReload }) => {
       country,
     }
 
-    addNewAddress(id, setUserAddresses, showNotification, setReload, address)
+    addNewAddress(id, setUserAddresses, addNotification, setReload, address)
   }
 
   const onEditAddress = () => {
@@ -79,7 +78,9 @@ const UserAddressForm = ({ id, editAddress, setEditAddress, setReload }) => {
     }
 
     if (editAddress._id) {
-      editUserAddress(editAddress._id, setUserAddresses, showNotification, setReload, address)
+      editUserAddress(editAddress._id, setUserAddresses, addNotification, setReload, address)
+      const customEvent = new CustomEvent('address-updated')
+      window.dispatchEvent(customEvent)
     }
   }
 

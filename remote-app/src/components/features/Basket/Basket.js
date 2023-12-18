@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import getBasketAPI from './utils/getBasketAPI'
 import deleteItemAPI from './utils/deleteItemAPI'
@@ -9,13 +9,11 @@ import BasketProducts from '@/components/modules/BasketProducts/BasketProducts'
 import deleteItemLocalStorage from './utils/deleteItemLocalStorage'
 import changeQuantityLocalStorage from './utils/changeQuantityLocalStorage'
 import getBasketFromLocalStorage from './utils/getBasketFromLocalStorage'
-
-import { NotificationContext } from '@/store/NotificationContext'
+import addNotification from './utils/addNotification'
 
 import 'tailwindcss/tailwind.css'
 
 const Basket = ({ isLoggedIn, children }) => {
-  const { showNotification } = useContext(NotificationContext)
   const [recheckBasket, setRecheckBasket] = useState(false)
   const [basketItems, setBasketItems] = useState({
     products: [],
@@ -29,9 +27,9 @@ const Basket = ({ isLoggedIn, children }) => {
         products: [],
         totalPrice: 0,
       })
-      showNotification({ message: 'All basket items was removed!', type: 'success' })
+      addNotification({ message: 'All basket items was removed!', type: 'success' })
     } else {
-      await removeAllBasketItemsAPI(showNotification, setRecheckBasket)
+      await removeAllBasketItemsAPI(addNotification, setRecheckBasket)
     }
   }
 
@@ -39,9 +37,9 @@ const Basket = ({ isLoggedIn, children }) => {
     if (!isLoggedIn) {
       deleteItemLocalStorage(product.id)
       setRecheckBasket(!recheckBasket)
-      showNotification({ message: 'Item was deleted!', type: 'success' })
+      addNotification({ message: 'Item was deleted!', type: 'success' })
     } else {
-      await deleteItemAPI(product._id, showNotification, setRecheckBasket)
+      await deleteItemAPI(product._id, addNotification, setRecheckBasket)
     }
   }
 
@@ -50,11 +48,11 @@ const Basket = ({ isLoggedIn, children }) => {
       changeQuantityLocalStorage(product, direction)
       setRecheckBasket(!recheckBasket)
       direction === 'plus'
-        ? showNotification({ message: 'Quantity was increased!', type: 'success' })
-        : showNotification({ message: 'Quantity was decreased!', type: 'success' })
+        ? addNotification({ message: 'Quantity was increased!', type: 'success' })
+        : addNotification({ message: 'Quantity was decreased!', type: 'success' })
       return
     } else {
-      await changeQuantityAPI(product._id, direction, showNotification, setRecheckBasket)
+      await changeQuantityAPI(product._id, direction, addNotification, setRecheckBasket)
     }
   }
 
@@ -66,7 +64,7 @@ const Basket = ({ isLoggedIn, children }) => {
     if (!isLoggedIn) {
       getBasketFromLocalStorage(setBasketItems, setRecheckBasket)
     } else {
-      getBasketAPI(setBasketItems, showNotification, setRecheckBasket)
+      getBasketAPI(setBasketItems, addNotification, setRecheckBasket)
     }
   }, [recheckBasket])
 

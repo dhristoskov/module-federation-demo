@@ -1,18 +1,17 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import getAllAddresses from '../../utils/getAllAddresses'
 import UserAddressItem from './UserAddressItem'
-import { NotificationContext } from '@/store/NotificationContext'
+import addNotification from '@/components/features/Basket/utils/addNotification'
 
 import 'tailwindcss/tailwind.css'
 
 const UserAddressesList = ({ id, reload, setReload, setEditAddress }) => {
-  const { showNotification } = useContext(NotificationContext)
   const [addresses, setAddresses] = useState([])
 
   useEffect(() => {
     if (!id) return
-    getAllAddresses(setAddresses, showNotification, setReload)
+    getAllAddresses(setAddresses, addNotification, setReload)
   }, [id, reload])
 
   return (
