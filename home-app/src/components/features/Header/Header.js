@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -10,13 +10,15 @@ import BaseIconButton from '@/components/elements/BaseIconButton/BaseIconButton'
 import CategoryDropDown from './CategoryDropDown/CategoryDropDown'
 import BasketDropDown from './BasketDropDown/BasketDropDown'
 import GlobalSearch from './GlobalSearch/GlobalSearch'
-import { AuthContext } from 'remote/storeAuth'
+
+import logout from './utils/logout'
+import useAuth from '@/hooks/useAuth'
 
 const showComponent = ['/products', '/products/[id]', '/', '/home']
 const hideBasket = ['/checkout', '/checkout/[id]']
 
 const Header = ({ categories }) => {
-  const { isLoggedIn, logout, user } = useContext(AuthContext)
+  const { isLoggedIn, user } = useAuth()
   const pathName = usePathname()
 
   const shouldShowComponent = showComponent.includes(pathName)

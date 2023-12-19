@@ -4,6 +4,7 @@ import Typography from '@/components/elements/Typography/Typography'
 import addNotification from '../Basket/utils/addNotification'
 import BasketOverview from './components/BasketOverview'
 import OptionsCheckoutTable from '@/components/modules/OptionsCheckoutTable/OptionsCheckoutTable'
+import useAuth from '@/hooks/useAuth'
 
 import getBasketAPI from '../Basket/utils/getBasketAPI'
 import deleteItemAPI from '../Basket/utils/deleteItemAPI'
@@ -17,7 +18,8 @@ import EmptyBasket from '@/components/modules/BasketProducts/components/EmptyBas
 
 import 'tailwindcss/tailwind.css'
 
-const Checkout = ({ isLoggedIn, setSelectedOptions, continueShopping, setIsBasketEmpty }) => {
+const Checkout = ({ setSelectedOptions, continueShopping, setIsBasketEmpty }) => {
+  const { isLoggedIn } = useAuth()
   const [recheckBasket, setRecheckBasket] = useState(false)
   const [basketItems, setBasketItems] = useState({
     products: [],
@@ -70,7 +72,7 @@ const Checkout = ({ isLoggedIn, setSelectedOptions, continueShopping, setIsBaske
     } else {
       getBasketAPI(setBasketItems, addNotification, setRecheckBasket)
     }
-  }, [recheckBasket])
+  }, [recheckBasket, isLoggedIn])
 
   useEffect(() => {
     const selectedOptionsIds = basketItems?.options?.map((option) => option.id) || []

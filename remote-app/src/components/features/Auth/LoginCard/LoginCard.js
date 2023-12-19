@@ -1,16 +1,14 @@
-import { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import axios from '@/axios'
 
 import BaseInputField from '@/components/elements/BaseInputField/BaseInputField'
 import BaseForm from '@/components/elements/BaseForm/BaseForm'
 import addNotification from '../../Basket/utils/addNotification'
-
-import { AuthContext } from '@/store/AuthContext'
+import login from '../utils/login'
 
 import 'tailwindcss/tailwind.css'
 
 const LoginCard = () => {
-  const { login } = useContext(AuthContext)
   const [user_name, setUsername] = useState('')
   const [password, setPassword] = useState('')
 

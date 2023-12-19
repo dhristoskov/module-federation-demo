@@ -24,6 +24,12 @@ const remotes = (isServer) => {
 
 const nextConfig = {
   reactStrictMode: false,
+  images: {
+    loader: 'default',
+    path: '/_next/image',
+    domains: ['localhost'],
+    unoptimized: true,
+  },
   webpack(config, { isServer }) {
     config.plugins.push(
       new NextFederationPlugin({
@@ -33,10 +39,10 @@ const nextConfig = {
         exposes: {
           // specify exposed pages and components
           './Auth': './src/components/features/Auth/Auth',
+          './useAuth': './src/hooks/useAuth',
           './UserAccount': './src/components/features/Account/UserAccount',
           './Address': './src/components/features/Address/Address',
           './Basket': './src/components/features/Basket/Basket',
-          './storeAuth': './src/store/AuthContext',
           './AddProductButton': './src/components/modules/AddProductButton/AddProductButton',
           './AddOption': './src/components/modules/AddOption/AddOption',
           './Checkout': './src/components/features/Checkout/Checkout',
@@ -45,18 +51,13 @@ const nextConfig = {
         shared: {
           // specify shared dependencies here
         },
-        extraOptions: {
-          exposePages: true, // `false` by default
-          enableImageLoaderFix: true, // `false` by default
-          enableUrlLoaderFix: true, // `false` by default
-        },
       }),
     )
     config.devServer = {
       historyApiFallback: true,
       hot: true,
     },
-    // config.cache = false
+    config.cache = false
     config.output.publicPath = 'auto'
     return config
   },

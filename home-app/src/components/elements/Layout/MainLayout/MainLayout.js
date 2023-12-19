@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 
 import Footer from '@/components/features/Footer/Footer'
@@ -9,7 +9,9 @@ import InfoHeader from '@/components/features/InfoHeader/InfoHeader'
 import Modal from '@/components/elements/Modal/Modal'
 import AccountCtA from '@/components/modules/AccountCtA/AccountCtA'
 import AccountModal from '@/components/features/AccountModal/AccountModal'
-import { AuthContext } from 'remote/storeAuth'
+
+import useAuth from '@/hooks/useAuth'
+import useNotification from '@/hooks/useNotification'
 
 const Auth = dynamic(() => import('remote/Auth'), {
   ssr: false,
@@ -17,11 +19,12 @@ const Auth = dynamic(() => import('remote/Auth'), {
 })
 
 const MainLayout = ({ tag = 'section', children, categories }) => {
-  const { isLoggedIn } = useContext(AuthContext)
+  const { isLoggedIn } = useAuth()
   const [auth, setAuth] = useState(false)
   const [selected, setSelected] = useState(null)
   const [showAccountModal, setShowAccountModal] = useState(false)
   const [activeNotification, setActiveNotification] = useState(null)
+  useNotification(setActiveNotification)
 
   const onModalClose = () => {
     setAuth(false)
@@ -48,22 +51,6 @@ const MainLayout = ({ tag = 'section', children, categories }) => {
       setAuth(false)
     }
   }, [isLoggedIn])
-
-  useEffect(() => {
-    window.addEventListener('addNotification', () => {
-      const notification = JSON.parse(localStorage.getItem('MFDnotification'))
-      if (notification) {
-        setActiveNotification(notification)
-        setTimeout(() => {
-          localStorage.removeItem('MFDnotification')
-          setActiveNotification(null)
-        }, 3000)
-      }
-    })
-    return () => {
-      window.removeEventListener('addNotification', () => {})
-    }
-  }, [])
 
   return (
     <>

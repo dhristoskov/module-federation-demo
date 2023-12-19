@@ -9,7 +9,7 @@ const AddProductButton = dynamic(() => import('remote/AddProductButton'), {
   loading: () => <div>Loading...</div>,
 })
 
-const ProductCard = ({ product, isLoggedIn }) => {
+const ProductCard = ({ product }) => {
   const newPrice = product.onSale
     ? (product.price - (product.price * product.discount) / 100).toFixed(2)
     : product.price
@@ -46,7 +46,6 @@ const ProductCard = ({ product, isLoggedIn }) => {
         </div>
         <AddProductButton
           title="Add to cart"
-          isLoggedIn={isLoggedIn}
           product={product}
         />
       </div>

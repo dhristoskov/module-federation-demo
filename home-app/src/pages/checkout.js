@@ -1,10 +1,9 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import dynamic from 'next/dynamic'
 
 import MainLayout from '@/components/elements/Layout/MainLayout/MainLayout'
 import AdditionalOptions from '@/components/features/AdditionalOptions/AdditionalOptions'
-import { AuthContext } from 'remote/storeAuth'
 import { fetchAPI } from '@/lib/api'
 
 const Checkout = dynamic(() => import('remote/Checkout'), {
@@ -20,7 +19,6 @@ const CheckoutUserInfo = dynamic(() => import('remote/CheckoutUserInfo'), {
 const Products = ({ options }) => {
   const [selectedOptions, setSelectedOptions] = useState([])
   const [isBasketEmpty, setIsBasketEmpty] = useState(true)
-  const { isLoggedIn } = useContext(AuthContext)
   const router = useRouter()
 
   const continueShopping = () => {
@@ -33,7 +31,6 @@ const Products = ({ options }) => {
         <section className="flex flex-col md:flex-row gap-5">
           <div className="flex flex-col flex-1 min-h-[36rem]">
             <Checkout
-              isLoggedIn={isLoggedIn}
               continueShopping={continueShopping}
               setIsBasketEmpty={setIsBasketEmpty}
               setSelectedOptions={setSelectedOptions}

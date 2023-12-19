@@ -1,13 +1,13 @@
-import React, { use, useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from '@/axios'
 
 import Typography from '@/components/elements/Typography/Typography'
-import { AuthContext } from '@/store/AuthContext'
+import useAuth from '@/hooks/useAuth'
 
 import 'tailwindcss/tailwind.css'
 
 const Address = () => {
-  const { user } = useContext(AuthContext)
+  const { user } = useAuth()
   const [reload, setReload] = useState(false)
   const [address, setAddress] = useState({
     street: '',
@@ -16,7 +16,7 @@ const Address = () => {
     city: '',
   })
 
-  const getUserAddress = async (id) => {
+  const getUserAddress = async () => {
     try {
       const response = await axios.get(`/address/selected/`)
 
@@ -31,14 +31,13 @@ const Address = () => {
         setReload(false)
       }
     } catch (err) {
-      console.log(err)
       setReload(false)
     }
   }
 
   useEffect(() => {
     window.addEventListener('address-updated', () => {
-      setReload(!reload)
+      setReload(true)
     })
 
     return () => {
@@ -48,9 +47,9 @@ const Address = () => {
 
   useEffect(() => {
     if (user && user.id) {
-      getUserAddress(user.id)
+      getUserAddress()
     }
-  }, [reload])
+  }, [reload, user])
 
   return (
     address.city &&

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { usePathname } from 'next/navigation'
 import dynamic from 'next/dynamic'
 
 import Breakpoints from '@/components/foundations/Breakpoints/Breakpoints'
 import BaseIcon from '@/components/elements/BaseIcon/BaseIcon'
 import Typography from '@/components/elements/Typography/Typography'
+import useAuth from '@/hooks/useAuth'
 
 const Address = dynamic(() => import('remote/Address'), {
   ssr: false,
@@ -14,14 +15,8 @@ const Address = dynamic(() => import('remote/Address'), {
 const SHOW_ADDRESS_OPTION = ['/products', '/products/[slug]', '/', '/home']
 
 const InfoHeader = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { isLoggedIn } = useAuth()
   const pathName = usePathname()
-  const storedData = JSON.parse(localStorage.getItem('userData'))
-  const token = storedData && storedData.token
-
-  useEffect(() => {
-    setIsLoggedIn(token)
-  }, [token])
 
   const showAddressOption = SHOW_ADDRESS_OPTION.includes(pathName)
   const loggedInClass = isLoggedIn && showAddressOption ? 'justify-between' : 'justify-end'
@@ -43,7 +38,9 @@ const InfoHeader = () => {
               <Address />
             </div>
           )}
-          <Typography additionalClasses="text-slate-100 text-xs font-bold">Todays Deal -10% to -20% for selected products</Typography>
+          <Typography additionalClasses="text-slate-100 text-xs font-bold">
+            Todays Deal -10% to -20% for selected products
+          </Typography>
         </div>
       </Breakpoints>
     </div>
@@ -55,11 +52,11 @@ export default InfoHeader
 export const getServersideProps = async (ctx) => {
   const address = await import('remote/Address')
 
-  if(address.getServersideProps) {
+  if (address.getServersideProps) {
     return await address.getServersideProps(ctx)
   }
 
   return {
-    props: {}
+    props: {},
   }
 }

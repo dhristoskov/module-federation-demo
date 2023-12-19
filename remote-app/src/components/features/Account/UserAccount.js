@@ -1,15 +1,15 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
 import UserOrders from './UserOreders/UserOrders'
 import UserAddress from './UserAddress/UserAddress'
 import UserSecurity from './UserSecurity/UserSecurity'
 import UserPaymentsForm from './UserPayments/UserPaymentsForm'
-import { AuthContext } from '@/store/AuthContext'
+import useAuth from '@/hooks/useAuth'
 
 import 'tailwindcss/tailwind.css'
 
 const UserAccount = ({ selected }) => {
-  const { user } = useContext(AuthContext)
+  const { user } = useAuth()
 
   const renderSelected = () => {
     switch (selected) {

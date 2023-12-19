@@ -46,18 +46,13 @@ const nextConfig = {
         shared: {
           // specify shared dependencies here
         },
-        extraOptions: {
-          exposePages: true, // `false` by default
-          enableImageLoaderFix: true, // `false` by default
-          enableUrlLoaderFix: true, // `false` by default
-        },
       }),
     )
     config.devServer = {
       historyApiFallback: true,
       hot: true,
     },
-    // config.cache = false
+    config.cache = false
     config.output.publicPath = 'auto'
 
     return config

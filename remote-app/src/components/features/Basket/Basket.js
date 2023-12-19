@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
+import useAuth from '@/hooks/useAuth'
+
 import getBasketAPI from './utils/getBasketAPI'
 import deleteItemAPI from './utils/deleteItemAPI'
 import changeQuantityAPI from './utils/changeQuantityAPI'
@@ -13,7 +15,8 @@ import addNotification from './utils/addNotification'
 
 import 'tailwindcss/tailwind.css'
 
-const Basket = ({ isLoggedIn, children }) => {
+const Basket = ({ children }) => {
+  const { isLoggedIn } = useAuth()
   const [recheckBasket, setRecheckBasket] = useState(false)
   const [basketItems, setBasketItems] = useState({
     products: [],
@@ -61,13 +64,14 @@ const Basket = ({ isLoggedIn, children }) => {
   }
 
   useEffect(() => {
+    if(isLoggedIn === null) return
     if (!isLoggedIn) {
       getBasketFromLocalStorage(setBasketItems, setRecheckBasket)
     } else {
       getBasketAPI(setBasketItems, addNotification, setRecheckBasket)
     }
-  }, [recheckBasket])
-
+  }, [recheckBasket, isLoggedIn])
+  
   return (
     <BasketProducts
       children={children}

@@ -3,8 +3,11 @@ import React from 'react'
 import setProductsInLocalStorage from './utils/setProductsInLocalStorage'
 import addNotification from '@/components/features/Basket/utils/addNotification'
 import addToBasketAPI from './utils/addToBasketAPI'
+import useAuth from '@/hooks/useAuth'
 
-const AddProductButton = ({ title, product, isLoggedIn }) => {
+const AddProductButton = ({ title, product }) => {
+  const { isLoggedIn } = useAuth()
+  
   const addToBasket = async () => {
     const newPrice = product?.onSale
       ? (product.price - (product?.price * product.discount) / 100).toFixed(2)

@@ -1,23 +1,17 @@
 import React from 'react'
 import App from 'next/app'
 import Head from 'next/head'
-import dynamic from 'next/dynamic'
 
 import '@/styles/globals.css'
 
-const AuthContextProvider = dynamic(() => import('remote/storeAuth'), {
-  ssr: false,
-  suspense: true,
-})
-
 const MyApp = ({ Component, pageProps }) => {
   return (
-    <AuthContextProvider>
+    <>
       <Head>
         <title>Plushy shop - Module Federation Demo</title>
       </Head>
       <Component {...pageProps} />
-    </AuthContextProvider>
+    </>
   )
 }
 

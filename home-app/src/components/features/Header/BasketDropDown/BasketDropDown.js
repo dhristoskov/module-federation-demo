@@ -1,19 +1,17 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 
 import Typography from '@/components/elements/Typography/Typography'
 import BaseIconButton from '@/components/elements/BaseIconButton/BaseIconButton'
-import { AuthContext } from 'remote/storeAuth'
 
 const Basket = dynamic(() => import('remote/Basket'), {
   ssr: false,
   loading: () => <div>Loading...</div>,
 })
 
-const CartDropDown = ({}) => {
+const CartDropDown = () => {
   const [open, setOpen] = useState(false)
-  const { isLoggedIn } = useContext(AuthContext)
 
   const toggleOpen = () => {
     setOpen(!open)
@@ -33,7 +31,7 @@ const CartDropDown = ({}) => {
           onMouseLeave={() => setOpen(false)}
           className="absolute border-2 border-slate-200 shadow-2xl z-20 top-8 right-0 bg-white w-[22rem] min-h-[20rem]"
         >
-          <Basket isLoggedIn={isLoggedIn}>
+          <Basket>
             <>
               <Link
                 href="/checkout"

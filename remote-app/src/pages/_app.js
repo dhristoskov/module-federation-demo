@@ -1,15 +1,10 @@
+import React from 'react'
 import App from 'next/app'
-
-import AuthContextProvider from '@/store/AuthContext'
 
 import '@/styles/globals.css'
 
 const MyApp = ({ Component, pageProps }) => {
-  return (
-    <AuthContextProvider>
-        <Component {...pageProps} />
-    </AuthContextProvider>
-  )
+  return <Component {...pageProps} />
 }
 
 MyApp.getInitialProps = async (appContext) => {
