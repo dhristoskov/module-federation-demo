@@ -17,8 +17,6 @@ const remotes = (isServer) => {
     home: createDelegatedModule(require.resolve('./remote-delegate.js'), {
       remote: `home@${HOME_APP_URL}/_next/static/${location}/remoteEntry.js`,
     }),
-    // remote: `remote@${REMOTR_APP_URL}/_next/static/${location}/remoteEntry.js`,
-    // home: `home@${HOME_APP_URL}/_next/static/${location}/remoteEntry.js`,
   }
 }
 

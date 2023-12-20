@@ -45,7 +45,7 @@ const addProductToBasket = async (req, res, next) => {
   if (!existingUser.basket) {
     const basket = new Basket({
       products: [],
-      // options: [],
+      options: [],
       user: userId,
     });
 
@@ -183,7 +183,7 @@ const removeAllProducts = async (req, res, next) => {
     const session = await mongoose.startSession();
     session.startTransaction();
     await Product.deleteMany({ basket: basketId });
-    await Basket.findByIdAndUpdate(basketId, { products: [] });
+    await Basket.findByIdAndUpdate(basketId, { products: [], options: [] });
     await session.commitTransaction();
   } catch (err) {
     res.status(500).json({ message: "Server failed, please try again later." });
@@ -193,9 +193,182 @@ const removeAllProducts = async (req, res, next) => {
   res.status(200).json({ message: "Basket cleared!" });
 };
 
-// const addOptionToBasket = async (req, res, next) => {};
+const addOptionToBasket = async (req, res, next) => {
+  const { id, title, price, quantity, image } = req.body;
 
-// const deleteOptionFromBasket = async (req, res, next) => {};
+  const authHeader = req.get("Authorization");
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) {
+    res.status(401).json({ message: "Not authenticated." });
+    return;
+  }
+
+  let decodedToken;
+  try {
+    decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+    return;
+  }
+
+  const userId = decodedToken.userId;
+
+  let existingUser;
+  try {
+    existingUser = await User.findById(userId);
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+    return;
+  }
+
+  if (!existingUser) {
+    res.status(404).json({ message: "User not found." });
+    return;
+  }
+
+  const basketId = existingUser.basket;
+
+  if (!basketId) {
+    res.status(404).json({ message: "Basket not found." });
+    return;
+  }
+
+  let existingBasket;
+  try {
+    existingBasket = await Basket.findById(basketId);
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+    return;
+  }
+
+  if (!existingBasket) {
+    res.status(404).json({ message: "Basket not found." });
+    return;
+  }
+
+  if (existingBasket.products.length === 0) {
+    res.status(404).json({ message: "Basket is empty." });
+    return;
+  }
+
+  let existingOption;
+  try {
+    existingOption = await Basket.findOne({
+      "options.id": id,
+      user: userId,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+  }
+
+  if (existingOption) {
+    res.status(404).json({ message: "Option already exists in the basket!" });
+    return;
+  }
+
+  const option = {
+    id,
+    title,
+    price,
+    quantity,
+    image,
+  };
+
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await Basket.findByIdAndUpdate(basketId, {
+      $push: { options: option },
+    });
+    await session.commitTransaction();
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+  }
+
+  res.status(200).json({ message: "Option added to basket!" });
+};
+
+const deleteOptionFromBasket = async (req, res, next) => {
+  const optionId = req.params.id;
+
+  const authHeader = req.get("Authorization");
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) {
+    res.status(401).json({ message: "Not authenticated." });
+    return;
+  }
+
+  let decodedToken;
+  try {
+    decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+    return;
+  }
+
+  const userId = decodedToken.userId;
+  let existingUser;
+  try {
+    existingUser = await User.findById(userId).populate({
+      path: "basket",
+      populate: {
+        path: "products",
+        model: "Product",
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+  }
+
+  if (!existingUser) {
+    res.status(404).json({ message: "User not found." });
+    return;
+  }
+
+  const basketId = existingUser.basket;
+
+  let existingBasket;
+  try {
+    existingBasket = await Basket.findById(basketId);
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+  }
+
+  if (!existingBasket) {
+    res.status(404).json({ message: "Basket not found." });
+    return;
+  }
+
+  let existingOption;
+  try {
+    existingOption = await Basket.findOne({
+      "options.id": optionId,
+      user: userId,
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+  }
+
+  if (!existingOption) {
+    res.status(404).json({ message: "Option not found." });
+    return;
+  }
+
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await Basket.findByIdAndUpdate(basketId, {
+      $pull: { options: { id: optionId } },
+    });
+    await session.commitTransaction();
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+  }
+
+  res.status(200).json({ message: "Option deleted from the basket!" });
+};
 
 const deleteProductFromBasket = async (req, res, next) => {
   const productId = req.params.id;
@@ -268,6 +441,26 @@ const deleteProductFromBasket = async (req, res, next) => {
     return;
   }
 
+  let existingBasket;
+  try {
+    existingBasket = await Basket.findById(basketId);
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+  }
+
+  if (existingBasket.products.length === 0) {
+    try {
+      const session = await mongoose.startSession();
+      session.startTransaction();
+      await Basket.findByIdAndUpdate(basketId, { options: [] });
+      await session.commitTransaction();
+    } catch (err) {
+      res
+        .status(500)
+        .json({ message: "Server failed, please try again later." });
+    }
+  }
+
   res.status(200).json({ message: "Product deleted from basket!" });
 };
 
@@ -335,10 +528,19 @@ const getBasketProducts = async (req, res, next) => {
     totalPrice += product.price;
   });
 
+  let optionsPrice = 0;
+  existingUser.basket.options.forEach((option) => {
+    optionsPrice += option.price;
+  });
+
+  const finalTotalPrice = totalPrice + optionsPrice;
+
   res.status(200).json({
     basket: {
       products: existingUser.basket.products || [],
+      options: existingUser.basket.options || [],
       totalPrice: totalPrice.toFixed(2) || 0,
+      finalTotalPrice: finalTotalPrice.toFixed(2) || 0,
     },
   });
 };
@@ -430,4 +632,6 @@ export default {
   removeAllProducts,
   changeQuantity,
   deleteProductFromBasket,
+  deleteOptionFromBasket,
+  addOptionToBasket,
 };

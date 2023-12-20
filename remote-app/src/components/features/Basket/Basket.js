@@ -20,7 +20,9 @@ const Basket = ({ children }) => {
   const [recheckBasket, setRecheckBasket] = useState(false)
   const [basketItems, setBasketItems] = useState({
     products: [],
+    options: [],
     totalPrice: 0,
+    finalTotalPrice: 0,
   })
 
   const removeAllBasketItems = async () => {
@@ -28,7 +30,9 @@ const Basket = ({ children }) => {
       localStorage.removeItem('basket')
       setBasketItems({
         products: [],
+        options: [],
         totalPrice: 0,
+        finalTotalPrice: 0,
       })
       addNotification({ message: 'All basket items was removed!', type: 'success' })
     } else {

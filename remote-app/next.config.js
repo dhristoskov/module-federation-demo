@@ -17,8 +17,6 @@ const remotes = (isServer) => {
     home: createDelegatedModule(require.resolve('./remote-delegate.js'), {
       remote: `home@${HOME_APP_URL}/_next/static/${location}/remoteEntry.js`,
     }),
-    // remote: `remote@${REMOTR_APP_URL}/_next/static/${location}/remoteEntry.js`,
-    // home: `home@${HOME_APP_URL}/_next/static/${location}/remoteEntry.js`,
   }
 }
 
@@ -39,7 +37,6 @@ const nextConfig = {
         exposes: {
           // specify exposed pages and components
           './Auth': './src/components/features/Auth/Auth',
-          './useAuth': './src/hooks/useAuth',
           './UserAccount': './src/components/features/Account/UserAccount',
           './Address': './src/components/features/Address/Address',
           './Basket': './src/components/features/Basket/Basket',
