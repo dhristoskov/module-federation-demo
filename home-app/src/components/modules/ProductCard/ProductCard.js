@@ -3,6 +3,7 @@ import Image from 'next/image'
 import dynamic from 'next/dynamic'
 
 import Typography from '@/components/elements/Typography/Typography'
+import BaseIcon from '@/components/elements/BaseIcon/BaseIcon'
 
 const AddProductButton = dynamic(() => import('remote/AddProductButton'), {
   ssr: false,
@@ -18,9 +19,11 @@ const ProductCard = ({ product }) => {
   return (
     <div>
       <div className="relative hover:shadow-2xl hover:scale-[1.03] w-fit p-4 cursor-pointer rounded-2xl flex flex-col items-center gap-2 min-w-[16rem]">
-        <p className="absolute top-7 right-7 text-xs text-slate-500 cursor-pointer hover:text-slate-900 hover:border-slate-900 border-2 border-slate-500 px-1">
-          favorite
-        </p>
+        <BaseIcon
+          icon="heart"
+          size="lg"
+          additionalClasses="absolute top-5 right-5"
+        />
         <Image
           loading="eager"
           priority={true}

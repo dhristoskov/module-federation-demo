@@ -1,9 +1,12 @@
+import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { validationResult } from "express-validator";
 
 import User from "../models/user.js";
+import Basket from "../models/basket.js";
+import Address from "../models/address.js";
 
 dotenv.config();
 
@@ -55,6 +58,7 @@ const registerUser = async (req, res, next) => {
     user_type: "default",
     basket: null,
     addresses: [],
+    // orders: [],
   });
 
   try {
@@ -381,6 +385,77 @@ const getUserInformation = async (req, res, next) => {
   });
 };
 
+const deleteUserAccount = async (req, res, next) => {
+  const { password } = req.body;
+
+  console.log(password)
+  const authHeader = req.get("Authorization");
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) {
+    res.status(401).json({ message: "Not authenticated." });
+    return;
+  }
+
+  let decodedToken;
+  try {
+    decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+    return;
+  }
+
+  const userId = decodedToken.userId;
+
+  let existingUser;
+  try {
+    existingUser = await User.findById(userId);
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later or now." });
+    return;
+  }
+
+  if (!existingUser) {
+    res.status(404).json({ message: "User not found." });
+    return;
+  }
+
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    res.status(422).json({ errors: errors.array() });
+    return;
+  }
+
+  let isValidPassword = false;
+  try {
+    isValidPassword = await bcrypt.compare(password, existingUser.password);
+  } catch (err) {
+    res.status(500).json({ message: "Login failed, please try again later." });
+    return;
+  }
+
+  if (!isValidPassword) {
+    res.status(403).json({ message: "Invalid credentials." });
+    return;
+  }
+
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await Basket.deleteOne({ _id: existingUser.basket });
+    await Address.deleteMany({ _id: { $in: existingUser.addresses } });
+    await User.deleteOne({ _id: userId });
+    await session.commitTransaction();
+    session.endSession();
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+    return;
+  }
+
+  res.status(200).json({ message: "User account deleted!." });
+};
+
 export default {
   registerUser,
   loginUser,
@@ -388,4 +463,5 @@ export default {
   addOrUpdatePhoneNumber,
   changeAccountPassword,
   getUserInformation,
+  deleteUserAccount,
 };

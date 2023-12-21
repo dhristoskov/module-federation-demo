@@ -9,7 +9,7 @@ import Basket from "../models/basket.js";
 dotenv.config();
 
 const addProductToBasket = async (req, res, next) => {
-  const { id, title, price, onSale, discount, quantity, image } = req.body;
+  const { id, title, price, onSale, discount, slug, image } = req.body;
 
   const authHeader = req.get("Authorization");
   const token = authHeader && authHeader.split(" ")[1];
@@ -118,6 +118,7 @@ const addProductToBasket = async (req, res, next) => {
         discount,
         quantity: 1,
         image,
+        slug,
         basket: basketId,
       });
 

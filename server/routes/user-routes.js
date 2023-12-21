@@ -85,5 +85,14 @@ router.patch(
   usersController.changeAccountPassword
 );
 router.get("/info", validate, usersController.getUserInformation);
+router.delete(
+  "/delete-user",
+  [
+    check("password", "Password at least 6 character long")
+      .isLength({ min: 6 })
+      .trim(),
+  ],
+  usersController.deleteUserAccount
+);
 
 export default router;

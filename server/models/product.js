@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema({
     discount: { type: Number, required: true, min: 0, max: 100 },
     quantity: { type: Number, required: true, min: 0 },
     image: { type: String, required: true },
+    slug: { type: String, required: true },
     basket: { type: mongoose.Types.ObjectId, required: true, ref: 'Basket' }
 });
 

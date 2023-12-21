@@ -5,6 +5,7 @@ import UserSecurityInfo from './UserSecurityComponents/UserSecurityInfo'
 import UserSecurityForm from './UserSecurityComponents/UserSecurityForm'
 import UserEmailOrPhoneForm from './UserSecurityComponents/UserEmailOrPhoneForm'
 import addNotification from '../../Basket/utils/addNotification'
+import UserDeleteAccount from './UserSecurityComponents/UserDeleteAccount'
 
 import 'tailwindcss/tailwind.css'
 
@@ -44,8 +45,8 @@ const UserSecurity = ({ id }) => {
         )
       case 'password':
         return <UserSecurityForm id={id} />
-      case 'report_problem':
-        return <div>report_problem</div>
+      case 'delete_account':
+        return <UserDeleteAccount />
       default:
         return (
           <UserEmailOrPhoneForm
