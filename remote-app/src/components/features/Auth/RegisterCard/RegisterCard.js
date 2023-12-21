@@ -65,7 +65,8 @@ const RegisterCard = () => {
         last_name,
       }
 
-      login(token, user)
+      const rememberMe = false
+      login(token, user, rememberMe)
       addNotification({ message: `User ${username} registered!`, type: 'success' })
 
       setUser({

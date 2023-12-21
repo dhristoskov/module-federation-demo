@@ -8,6 +8,7 @@ import useAuth from '@/hooks/useAuth'
 
 import getBasketAPI from '../Basket/utils/getBasketAPI'
 import deleteItemAPI from '../Basket/utils/deleteItemAPI'
+import deleteOptionAPI from '../Basket/utils/deleteOptionAPI'
 import changeQuantityAPI from '../Basket/utils/changeQuantityAPI'
 
 import getBasketFromLocalStorage from '../Basket/utils/getBasketFromLocalStorage'
@@ -39,9 +40,13 @@ const Checkout = ({ setSelectedOptions, continueShopping, setIsBasketEmpty }) =>
   }
 
   const deleteOptionFromBasket = async (option) => {
-    deleteOptionLocalStorage(option.id)
-    setRecheckBasket(!recheckBasket)
-    addNotification({ message: 'Option was deleted!', type: 'success' })
+    if (!isLoggedIn) {
+      deleteOptionLocalStorage(option.id)
+      setRecheckBasket(!recheckBasket)
+      addNotification({ message: 'Option was deleted!', type: 'success' })
+    } else {
+      await deleteOptionAPI(option._id, addNotification, setRecheckBasket)
+    }
   }
 
   const changeQuantity = async (product, direction) => {

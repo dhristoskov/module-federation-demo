@@ -11,6 +11,7 @@ import 'tailwindcss/tailwind.css'
 const LoginCard = () => {
   const [user_name, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [rememberMe, setRememberMe] = useState(false)
 
   const onLogin = async () => {
     if (!user_name || !password) {
@@ -35,7 +36,7 @@ const LoginCard = () => {
         last_name,
       }
 
-      login(token, user)
+      login(token, user, rememberMe)
       addNotification({ message: `User ${username} logged in!`, type: 'success' })
 
       setUsername('')
@@ -70,7 +71,8 @@ const LoginCard = () => {
         <div className="flex gap-2 items-center">
           <input
             type="checkbox"
-            value=""
+            checked={rememberMe}
+            onChange={() => setRememberMe(!rememberMe)}
             className="w-4 h-4 text-orange-500 bg-gray-100 border-gray-300 rounded focus:ring-orange-500 dark:focus:ring-orange-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
           />
           <p className="text-sm font-bold">Stay signed in</p>

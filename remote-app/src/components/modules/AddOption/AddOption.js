@@ -3,10 +3,14 @@ import React from 'react'
 import Typography from '@/components/elements/Typography/Typography'
 import addOptionInLocalStorage from './utils/addOptionInLocalStorage'
 import addNotification from '@/components/features/Basket/utils/addNotification'
+import useAuth from '@/hooks/useAuth'
 
 import 'tailwindcss/tailwind.css'
+import addOptionAPI from './utils/addOptionAPI'
 
 const AddOption = ({ title, option }) => {
+  const { isLoggedIn } = useAuth()
+
   const formattedOption = {
     id: option.id,
     description: option?.attributes?.description,
@@ -15,9 +19,13 @@ const AddOption = ({ title, option }) => {
     price: option?.attributes?.price,
     image: option?.attributes?.image,
   }
-  const handleAddOption = () => {
-    addOptionInLocalStorage(formattedOption)
-    addNotification({ message: 'Option added to basket!', type: 'success' })
+  const handleAddOption = async () => {
+    if (!isLoggedIn) {
+      addOptionInLocalStorage(formattedOption)
+      addNotification({ message: 'Option added to basket!', type: 'success' })
+    } else {
+      await addOptionAPI(formattedOption, addNotification)
+    }
 
     const event = new CustomEvent('addOption')
     window.dispatchEvent(event)

@@ -194,7 +194,7 @@ const removeAllProducts = async (req, res, next) => {
 };
 
 const addOptionToBasket = async (req, res, next) => {
-  const { id, title, price, quantity, image } = req.body;
+  const { id, title, price, image } = req.body;
 
   const authHeader = req.get("Authorization");
   const token = authHeader && authHeader.split(" ")[1];
@@ -271,7 +271,6 @@ const addOptionToBasket = async (req, res, next) => {
     id,
     title,
     price,
-    quantity,
     image,
   };
 
@@ -344,7 +343,7 @@ const deleteOptionFromBasket = async (req, res, next) => {
   let existingOption;
   try {
     existingOption = await Basket.findOne({
-      "options.id": optionId,
+      "options._id": optionId,
       user: userId,
     });
   } catch (err) {
@@ -360,7 +359,7 @@ const deleteOptionFromBasket = async (req, res, next) => {
     const session = await mongoose.startSession();
     session.startTransaction();
     await Basket.findByIdAndUpdate(basketId, {
-      $pull: { options: { id: optionId } },
+      $pull: { options: { _id: optionId } },
     });
     await session.commitTransaction();
   } catch (err) {
