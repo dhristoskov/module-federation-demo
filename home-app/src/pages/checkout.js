@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import MainLayout from '@/components/elements/Layout/MainLayout/MainLayout'
 import AdditionalOptions from '@/components/features/AdditionalOptions/AdditionalOptions'
 import { fetchAPI } from '@/lib/api'
+import Head from 'next/head'
 
 const Checkout = dynamic(() => import('remote/Checkout'), {
   ssr: false,
@@ -26,28 +27,33 @@ const Products = ({ options }) => {
   }
 
   return (
-    <MainLayout>
-      <section className="col-span-full col-start-1">
-        <section className="flex flex-col md:flex-row gap-5">
-          <div className="flex flex-col flex-1 min-h-[36rem]">
-            <Checkout
-              continueShopping={continueShopping}
-              setIsBasketEmpty={setIsBasketEmpty}
-              setSelectedOptions={setSelectedOptions}
-            />
-            {!isBasketEmpty && (
-              <AdditionalOptions
-                options={options}
-                selectedOptions={selectedOptions}
+    <>
+      <Head>
+        <title>Checkout</title>
+      </Head>
+      <MainLayout>
+        <section className="col-span-full col-start-1">
+          <section className="flex flex-col md:flex-row gap-5">
+            <div className="flex flex-col flex-1 min-h-[36rem]">
+              <Checkout
+                continueShopping={continueShopping}
+                setIsBasketEmpty={setIsBasketEmpty}
+                setSelectedOptions={setSelectedOptions}
               />
-            )}
-          </div>
-          <div className="flex flex-col flex-1">
-            <CheckoutUserInfo />
-          </div>
+              {!isBasketEmpty && (
+                <AdditionalOptions
+                  options={options}
+                  selectedOptions={selectedOptions}
+                />
+              )}
+            </div>
+            <div className="flex flex-col flex-1">
+              <CheckoutUserInfo />
+            </div>
+          </section>
         </section>
-      </section>
-    </MainLayout>
+      </MainLayout>
+    </>
   )
 }
 

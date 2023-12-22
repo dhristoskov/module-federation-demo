@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_banner_banner_slides",
+  "info": {
+    "displayName": "BannerSlide",
+    "icon": "bold"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "allowedTypes": [
+        "images",
+        "videos"
+      ],
+      "type": "media",
+      "multiple": true,
+      "required": true
+    },
+    "ctaTitle": {
+      "type": "string"
+    },
+    "ctaSlug": {
+      "type": "string"
+    }
+  }
+}

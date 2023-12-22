@@ -5,9 +5,10 @@ import Category from '@/components/features/Products/Category/Category'
 import MainLayout from '@/components/elements/Layout/MainLayout/MainLayout'
 import PopularProducts from '@/components/features/Products/PopularProducts/PopularProducts'
 import ProductsOnSale from '@/components/features/Products/ProductsOnSale/ProductsOnSale'
+import Seo from '@/components/modules/Seo/Seo'
 import { fetchAPI } from '@/lib/api'
 
-const Home = ({ products, faqs, categories }) => {
+const Home = ({ products, faqs, categories, home }) => {
   const formattedProducts = products.map((product) => {
     return {
       id: product.id,
@@ -24,22 +25,30 @@ const Home = ({ products, faqs, categories }) => {
   const productsNotOnSale = formattedProducts.filter((product) => product.onSale === false)
 
   return (
-    <MainLayout categories={categories}>
-      <div className="col-span-full col-start-1">
-        <PopularProducts products={productsNotOnSale} />
-        <ProductsOnSale products={productsOnSale} />
-        <Category categories={categories} />
-        <Faq faqs={faqs} />
-      </div>
-    </MainLayout>
+    <>
+      <Seo seo={home.attributes.home_seo} />
+      <MainLayout categories={categories}>
+        <div className="col-span-full col-start-1">
+          <PopularProducts products={productsNotOnSale} />
+          <ProductsOnSale products={productsOnSale} />
+          <Category categories={categories} />
+          <Faq faqs={faqs} />
+        </div>
+      </MainLayout>
+    </>
   )
 }
 
 export const getStaticProps = async () => {
-  const [products, faqs, categories] = await Promise.all([
+  const [products, faqs, categories, home] = await Promise.all([
     fetchAPI('/products'),
     fetchAPI('/faqs'),
     fetchAPI('/categories'),
+    fetchAPI('/home', {
+      populate: {
+        home_seo: { populate: '*' },
+      },
+    }),
   ])
 
   return {
@@ -47,6 +56,7 @@ export const getStaticProps = async () => {
       products: products?.data || [],
       faqs: faqs?.data || [],
       categories: categories?.data || [],
+      home: home?.data || [],
     },
     revalidate: 1,
   }

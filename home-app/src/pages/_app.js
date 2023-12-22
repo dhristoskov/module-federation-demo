@@ -1,24 +1,37 @@
 import React from 'react'
 import App from 'next/app'
-import Head from 'next/head'
+import { createContext } from 'react'
+
+import { fetchAPI } from '@/lib/api'
 
 import '@/styles/globals.css'
 
+export const GlobalContext = createContext({
+  default_seo: {},
+  site_title: '',
+})
+
 const MyApp = ({ Component, pageProps }) => {
+  const { global } = pageProps;
   return (
-    <>
-      <Head>
-        <title>Plushy shop - Module Federation Demo</title>
-      </Head>
+    <GlobalContext.Provider value={global.attributes}>
       <Component {...pageProps} />
-    </>
+    </GlobalContext.Provider>
   )
 }
 
-MyApp.getInitialProps = async (appContext) => {
-  const appProps = await App.getInitialProps(appContext)
+MyApp.getInitialProps = async (context) => {
+  const ctx = await App.getInitialProps(context)
 
-  return { ...appProps }
+  const globalRes = await fetchAPI('/global', {
+    populate: {
+      default_seo: {
+        populate: '*',
+      },
+    },
+  })
+
+  return { ...ctx, pageProps: { global: globalRes.data } }
 }
 
 export default MyApp
