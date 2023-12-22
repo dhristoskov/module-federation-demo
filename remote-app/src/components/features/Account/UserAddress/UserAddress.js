@@ -23,6 +23,8 @@ const UserAddress = ({ id }) => {
         id={id}
         reload={reload}
         setReload={setReload}
+        editAddress={editAddress}
+
         setEditAddress={setEditAddress}
       />
     </div>

@@ -51,6 +51,17 @@ const Address = () => {
     }
   }, [reload, user])
 
+  useEffect(() => {
+    console.log('address available')
+    if (address.city && address.street && address.street_number && address.postal_code) {
+      const event = new CustomEvent('address-available', { detail: true })
+      window.dispatchEvent(event)
+    } else {
+      const event = new CustomEvent('address-available', { detail: false })
+      window.dispatchEvent(event)
+    }
+  }, [address])
+
   return (
     address.city &&
     address.street &&

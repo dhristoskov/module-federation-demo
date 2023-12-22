@@ -4,23 +4,25 @@ import Typography from '@/components/elements/Typography/Typography'
 import deleteSelectedAddress from '../../utils/deleteSelectedAddress'
 import setAsDefaultAddress from '../../utils/setAsDefaultAddress'
 import addNotification from '@/components/features/Basket/utils/addNotification'
+import triggerCustomUpdateEvent from '../events/triggerCustomUpdateEvent'
 
 import 'tailwindcss/tailwind.css'
 
-const UserAddressItem = ({ address, setReload, setEditAddress }) => {
+const UserAddressItem = ({ address, setReload, editAddress, setEditAddress }) => {
   const buttonStyles = 'cursor-pointer bg-white transition-colors duration-150 ease-in-out hover:bg-slate-400 px-2 py-1'
   const selected = address.selected_status ? 'bg-slate-300' : 'bg-white'
 
   const [open, setOpen] = useState(false)
+  const isOnEdit = editAddress && editAddress._id === address._id
 
   const deleteItem = async () => {
     await deleteSelectedAddress(address._id, addNotification, setReload)
+    triggerCustomUpdateEvent('address-updated')
   }
 
   const setAsDefault = async () => {
     await setAsDefaultAddress(address._id, addNotification, setReload)
-    const customEvent = new CustomEvent('address-updated')
-    window.dispatchEvent(customEvent)
+    triggerCustomUpdateEvent('address-updated')
   }
 
   const toggleOpen = () => {
@@ -34,9 +36,7 @@ const UserAddressItem = ({ address, setReload, setEditAddress }) => {
   }
 
   return (
-    <div
-      className={`flex flex-col gap-1 shadow-xl rounded-xl p-4 relative ${selected}`}
-    >
+    <div className={`flex flex-col gap-1 shadow-xl rounded-xl p-4 relative ${selected}`}>
       <div className="w-full flex justify-end">
         <p
           className="cursor-pointer text-xs font-bold text-slate-700 hover:text-slate-900 mb-2"
@@ -63,7 +63,7 @@ const UserAddressItem = ({ address, setReload, setEditAddress }) => {
           >
             Edit
           </p>
-          {!address.selected_status && (
+          {!address.selected_status && !isOnEdit && (
             <p
               className={buttonStyles}
               onClick={deleteItem}

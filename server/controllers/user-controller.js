@@ -58,7 +58,7 @@ const registerUser = async (req, res, next) => {
     user_type: "default",
     basket: null,
     addresses: [],
-    // orders: [],
+    orders: [],
   });
 
   try {
@@ -387,8 +387,6 @@ const getUserInformation = async (req, res, next) => {
 
 const deleteUserAccount = async (req, res, next) => {
   const { password } = req.body;
-
-  console.log(password)
   const authHeader = req.get("Authorization");
   const token = authHeader && authHeader.split(" ")[1];
 

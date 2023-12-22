@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 import User from "../models/user.js";
-import Product from "../models/product.js";
 import Basket from "../models/basket.js";
 
 dotenv.config();
@@ -82,25 +81,27 @@ const addProductToBasket = async (req, res, next) => {
       return;
     }
 
-    let existingProduct;
-    try {
-      existingProduct = await Product.findOne({
-        id: id,
-        basket: basketId,
-      });
-    } catch (err) {
-      res
-        .status(500)
-        .json({ message: "Server failed, please try again later." });
-      return;
-    }
+    const existingProduct = existingBasket.products.find(
+      (product) => product.slug === slug
+    );
 
     if (existingProduct) {
       existingProduct.quantity += 1;
       existingProduct.price += price;
 
       try {
-        await existingProduct.save();
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        await Basket.findOneAndUpdate(
+          { "products._id": existingProduct._id },
+          {
+            $set: {
+              "products.$.quantity": existingProduct.quantity,
+              "products.$.price": existingProduct.price,
+            },
+          }
+        );
+        await session.commitTransaction();
       } catch (err) {
         res
           .status(500)
@@ -110,7 +111,7 @@ const addProductToBasket = async (req, res, next) => {
     }
 
     if (!existingProduct) {
-      const product = new Product({
+      const product = {
         id,
         title,
         price,
@@ -119,15 +120,14 @@ const addProductToBasket = async (req, res, next) => {
         quantity: 1,
         image,
         slug,
-        basket: basketId,
-      });
+      };
 
       try {
         const session = await mongoose.startSession();
         session.startTransaction();
-        await product.save({ session: session });
-        existingBasket.products.push(product);
-        await existingBasket.save({ session: session });
+        await Basket.findByIdAndUpdate(basketId, {
+          $push: { products: product },
+        });
         await session.commitTransaction();
       } catch (err) {
         res
@@ -162,13 +162,7 @@ const removeAllProducts = async (req, res, next) => {
 
   let existingUser;
   try {
-    existingUser = await User.findById(userId).populate({
-      path: "basket",
-      populate: {
-        path: "products",
-        model: "Product",
-      },
-    });
+    existingUser = await User.findById(userId).populate({ path: "basket" });
   } catch (err) {
     res.status(500).json({ message: "Server failed, please try again later." });
     return;
@@ -183,7 +177,6 @@ const removeAllProducts = async (req, res, next) => {
   try {
     const session = await mongoose.startSession();
     session.startTransaction();
-    await Product.deleteMany({ basket: basketId });
     await Basket.findByIdAndUpdate(basketId, { products: [], options: [] });
     await session.commitTransaction();
   } catch (err) {
@@ -313,10 +306,7 @@ const deleteOptionFromBasket = async (req, res, next) => {
   try {
     existingUser = await User.findById(userId).populate({
       path: "basket",
-      populate: {
-        path: "products",
-        model: "Product",
-      },
+      populate: { path: "options" },
     });
   } catch (err) {
     res.status(500).json({ message: "Server failed, please try again later." });
@@ -393,13 +383,7 @@ const deleteProductFromBasket = async (req, res, next) => {
 
   let existingUser;
   try {
-    existingUser = await User.findById(userId).populate({
-      path: "basket",
-      populate: {
-        path: "products",
-        model: "Product",
-      },
-    });
+    existingUser = await User.findById(userId).populate({ path: "basket" });
   } catch (err) {
     res.status(500).json({ message: "Server failed, please try again later." });
     return;
@@ -412,16 +396,21 @@ const deleteProductFromBasket = async (req, res, next) => {
 
   const basketId = existingUser.basket;
 
-  let existingProduct;
+  let existingBasket;
   try {
-    existingProduct = await Product.findOne({
-      _id: productId,
-      basket: basketId,
-    });
+    existingBasket = await Basket.findById(basketId);
   } catch (err) {
     res.status(500).json({ message: "Server failed, please try again later." });
+  }
+
+  if (!existingBasket) {
+    res.status(404).json({ message: "Basket not found." });
     return;
   }
+
+  const existingProduct = existingBasket.products.find(
+    (product) => product._id.toString() === productId
+  );
 
   if (!existingProduct) {
     res.status(404).json({ message: "Product not found." });
@@ -431,34 +420,15 @@ const deleteProductFromBasket = async (req, res, next) => {
   try {
     const session = await mongoose.startSession();
     session.startTransaction();
-    await Product.findByIdAndDelete(existingProduct._id);
     await Basket.findByIdAndUpdate(basketId, {
-      $pull: { products: existingProduct._id },
+      $pull: { products: { _id: productId } },
     });
+    if (existingBasket.products.length === 1) {
+      await Basket.findByIdAndUpdate(basketId, { options: [] });
+    }
     await session.commitTransaction();
   } catch (err) {
     res.status(500).json({ message: "Server failed, please try again later." });
-    return;
-  }
-
-  let existingBasket;
-  try {
-    existingBasket = await Basket.findById(basketId);
-  } catch (err) {
-    res.status(500).json({ message: "Server failed, please try again later." });
-  }
-
-  if (existingBasket.products.length === 0) {
-    try {
-      const session = await mongoose.startSession();
-      session.startTransaction();
-      await Basket.findByIdAndUpdate(basketId, { options: [] });
-      await session.commitTransaction();
-    } catch (err) {
-      res
-        .status(500)
-        .json({ message: "Server failed, please try again later." });
-    }
   }
 
   res.status(200).json({ message: "Product deleted from basket!" });
@@ -485,13 +455,7 @@ const getBasketProducts = async (req, res, next) => {
 
   let existingUser;
   try {
-    existingUser = await User.findById(userId).populate({
-      path: "basket",
-      populate: {
-        path: "products",
-        model: "Product",
-      },
-    });
+    existingUser = await User.findById(userId).populate("basket");
   } catch (err) {
     res.status(500).json({ message: "Server failed, please try again later." });
     return;
@@ -505,6 +469,7 @@ const getBasketProducts = async (req, res, next) => {
   if (!existingUser.basket) {
     const basket = new Basket({
       products: [],
+      options: [],
       user: userId,
     });
 
@@ -569,13 +534,7 @@ const changeQuantity = async (req, res, next) => {
 
   let existingUser;
   try {
-    existingUser = await User.findById(userId).populate({
-      path: "basket",
-      populate: {
-        path: "products",
-        model: "Product",
-      },
-    });
+    existingUser = await User.findById(userId).populate({ path: "basket" });
   } catch (err) {
     res.status(500).json({ message: "Server failed, please try again later." });
   }
@@ -587,15 +546,21 @@ const changeQuantity = async (req, res, next) => {
 
   const basketId = existingUser.basket;
 
-  let existingProduct;
+  let existingBasket;
   try {
-    existingProduct = await Product.findOne({
-      _id: productId,
-      basket: basketId,
-    });
+    existingBasket = await Basket.findById(basketId);
   } catch (err) {
     res.status(500).json({ message: "Server failed, please try again later." });
   }
+
+  if (!existingBasket) {
+    res.status(404).json({ message: "Basket not found." });
+    return;
+  }
+
+  const existingProduct = existingBasket.products.find(
+    (product) => product._id.toString() === productId
+  );
 
   if (!existingProduct) {
     res.status(404).json({ message: "Product not found." });
@@ -604,7 +569,7 @@ const changeQuantity = async (req, res, next) => {
 
   const productPrice =
     existingProduct.quantity > 1
-      ? (existingProduct.price / existingProduct.quantity).toFixed(2)
+      ? existingProduct.price / existingProduct.quantity
       : existingProduct.price;
 
   if (direction === "plus") {
@@ -618,7 +583,18 @@ const changeQuantity = async (req, res, next) => {
   }
 
   try {
-    await existingProduct.save();
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await Basket.findOneAndUpdate(
+      { "products._id": existingProduct._id },
+      {
+        $set: {
+          "products.$.quantity": existingProduct.quantity,
+          "products.$.price": existingProduct.price.toFixed(2),
+        },
+      }
+    );
+    await session.commitTransaction();
   } catch (err) {
     res.status(500).json({ message: "Server failed, please try again later." });
   }

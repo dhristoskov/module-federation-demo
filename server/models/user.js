@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     user_type: { type: String, required: true, default: 'default' },
     addresses: [{ type: mongoose.Types.ObjectId, required: false, ref: 'Address' }],
     basket: { type: mongoose.Types.ObjectId, required: false, ref: 'Basket' },
-    // orders: [{ type: mongoose.Types.ObjectId, required: false, ref: 'Order' }]
+    orders: [{ type: mongoose.Types.ObjectId, required: false, ref: 'Order' }]
 });
 
 export default mongoose.model('User', userSchema);

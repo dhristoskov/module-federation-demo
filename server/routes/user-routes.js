@@ -92,6 +92,7 @@ router.delete(
       .isLength({ min: 6 })
       .trim(),
   ],
+  validate,
   usersController.deleteUserAccount
 );
 

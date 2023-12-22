@@ -5,6 +5,7 @@ import BaseInputField from '@/components/elements/BaseInputField/BaseInputField'
 import addNewAddress from '../../utils/addNewAddress'
 import editUserAddress from '../../utils/editUserAddress'
 import addNotification from '@/components/features/Basket/utils/addNotification'
+import triggerCustomUpdateEvent from '../events/triggerCustomUpdateEvent'
 
 import 'tailwindcss/tailwind.css'
 
@@ -63,10 +64,11 @@ const UserAddressForm = ({ id, editAddress, setEditAddress, setReload }) => {
       country,
     }
 
-    addNewAddress(id, setUserAddresses, addNotification, setReload, address)
+    await addNewAddress(id, setUserAddresses, addNotification, setReload, address)
+    triggerCustomUpdateEvent('address-updated')
   }
 
-  const onEditAddress = () => {
+  const onEditAddress = async () => {
     if (!street || !city || !street_number || !postal_code || !country) return
 
     const address = {
@@ -78,9 +80,8 @@ const UserAddressForm = ({ id, editAddress, setEditAddress, setReload }) => {
     }
 
     if (editAddress._id) {
-      editUserAddress(editAddress._id, setUserAddresses, addNotification, setReload, address)
-      const customEvent = new CustomEvent('address-updated')
-      window.dispatchEvent(customEvent)
+      await editUserAddress(editAddress._id, setUserAddresses, addNotification, setReload, address)
+      triggerCustomUpdateEvent('address-updated')
     }
   }
 

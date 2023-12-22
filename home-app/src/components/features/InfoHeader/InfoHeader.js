@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import dynamic from 'next/dynamic'
 
@@ -16,10 +16,21 @@ const SHOW_ADDRESS_OPTION = ['/products', '/products/[slug]', '/', '/home']
 
 const InfoHeader = () => {
   const { isLoggedIn } = useAuth()
+  const [isAddressAvailable, setIsAddressAvailable] = useState(false)
   const pathName = usePathname()
 
   const showAddressOption = SHOW_ADDRESS_OPTION.includes(pathName)
   const loggedInClass = isLoggedIn && showAddressOption ? 'justify-between' : 'justify-end'
+
+  useEffect(() => {
+    window.addEventListener('address-available', (e) => {
+      setIsAddressAvailable(e.detail)
+    })
+
+    return () => {
+      window.removeEventListener('address-available', () => {})
+    }
+  }, [])
 
   return (
     <div className="shadow-md min-h-[2rem] shadow-slate-300 bg-slate-900">
@@ -29,16 +40,18 @@ const InfoHeader = () => {
         >
           {isLoggedIn && showAddressOption && (
             <div className="flex items-center gap-2 cursor-pointer">
-              <p className="hidden md:flex h-[2rem] w-[2rem] bg-slate-100 items-center justify-center">
-                <BaseIcon
-                  size="md"
-                  icon="map-marker"
-                />
-              </p>
-              <Address />
+              {isAddressAvailable && (
+                <p className="hidden md:flex h-[2rem] w-[2rem] bg-slate-100 items-center justify-center">
+                  <BaseIcon
+                    size="md"
+                    icon="map-marker"
+                  />
+                </p>
+              )}
+              <Address setIsAddressAvailable={setIsAddressAvailable} />
             </div>
           )}
-          <Typography additionalClasses="text-slate-100 text-xs font-bold">
+          <Typography additionalClasses="text-slate-100 text-xs font-bold ml-auto">
             Todays Deal -10% to -20% for selected products
           </Typography>
         </div>

@@ -6,7 +6,7 @@ import addNotification from '@/components/features/Basket/utils/addNotification'
 
 import 'tailwindcss/tailwind.css'
 
-const UserAddressesList = ({ id, reload, setReload, setEditAddress }) => {
+const UserAddressesList = ({ id, reload, setReload, editAddress, setEditAddress }) => {
   const [addresses, setAddresses] = useState([])
 
   useEffect(() => {
@@ -15,13 +15,15 @@ const UserAddressesList = ({ id, reload, setReload, setEditAddress }) => {
   }, [id, reload])
 
   return (
-    addresses && addresses?.length > 0 && (
+    addresses &&
+    addresses?.length > 0 && (
       <section className="grid xs:grid-cols-1 sm:grid-cols-2 grid-rows-2 gap-4 md:w-6/12 w-full">
         {addresses.map((address) => (
           <UserAddressItem
             key={address._id}
             address={address}
             setReload={setReload}
+            editAddress={editAddress}
             setEditAddress={setEditAddress}
           />
         ))}
