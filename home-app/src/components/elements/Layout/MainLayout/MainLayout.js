@@ -18,16 +18,26 @@ const Auth = dynamic(() => import('remote/Auth'), {
   loading: () => <div>Loading...</div>,
 })
 
+const BasketModal = dynamic(() => import('remote/BasketModal'), {
+  ssr: false,
+  loading: () => <div>Loading...</div>,
+})
+
 const MainLayout = ({ tag = 'section', children, categories }) => {
   const { isLoggedIn } = useAuth()
   const [auth, setAuth] = useState(false)
   const [selected, setSelected] = useState(null)
   const [showAccountModal, setShowAccountModal] = useState(false)
   const [activeNotification, setActiveNotification] = useState(null)
+  const [openBasketModal, setOpenBasketModal] = useState(false)
   useNotification(setActiveNotification)
 
   const onModalClose = () => {
     setAuth(false)
+  }
+
+  const onBasketModalClose = () => {
+    setOpenBasketModal(false)
   }
 
   const toggleAccountModal = () => {
@@ -41,8 +51,20 @@ const MainLayout = ({ tag = 'section', children, categories }) => {
     window.addEventListener('auth', () => {
       setAuth(true)
     })
+
+    window.addEventListener('basket-available', (e) => {
+      if (e.detail) {
+        setOpenBasketModal(true)
+      }
+
+      if (!e.detail) {
+        setOpenBasketModal(false)
+      }
+    })
+
     return () => {
       window.removeEventListener('auth', () => {})
+      window.removeEventListener('basket-available', () => {})
     }
   }, [])
 
@@ -60,7 +82,13 @@ const MainLayout = ({ tag = 'section', children, categories }) => {
       >
         <Auth />
       </Modal>
-      {isLoggedIn && <AccountCtA onClick={toggleAccountModal} />}
+      <Modal
+        isOpen={openBasketModal}
+        onClose={onBasketModalClose}
+      >
+        <BasketModal />
+      </Modal>
+      {isLoggedIn && !openBasketModal && <AccountCtA onClick={toggleAccountModal} />}
       {isLoggedIn && (
         <AccountModal
           selected={selected}

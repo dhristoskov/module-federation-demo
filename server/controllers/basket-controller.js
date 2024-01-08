@@ -7,6 +7,62 @@ import Basket from "../models/basket.js";
 
 dotenv.config();
 
+const addBulkProductsToBasket = async (req, res, next) => {
+  const { products } = req.body;
+
+  const authHeader = req.get("Authorization");
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (!token) {
+    res.status(401).json({ message: "Not authenticated." });
+    return;
+  }
+
+  let decodedToken;
+  try {
+    decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+  }
+
+  const userId = decodedToken.userId;
+
+  let existingUser;
+  try {
+    existingUser = await User.findById(userId).populate({ path: "basket" });
+  } catch (err) {
+    res.status(500).json({ message: "Server failed, please try again later." });
+  }
+
+  if (!existingUser) {
+    res.status(404).json({ message: "User not found." });
+    return;
+  }
+
+  if (!existingUser.basket) {
+    const basket = new Basket({
+      products: [],
+      options: [],
+      user: userId,
+    });
+
+    try {
+      const session = await mongoose.startSession();
+      session.startTransaction();
+      await basket.save({ session: session });
+      existingUser.basket = basket;
+      await existingUser.save({ session: session });
+      await session.commitTransaction();
+    } catch (err) {
+      res
+        .status(500)
+        .json({ message: "Server failed, please try again later." });
+      return;
+    }
+  }
+  // Merging the basket from local storage with the basket from the db
+};
+
 const addProductToBasket = async (req, res, next) => {
   const { id, title, price, onSale, discount, slug, image } = req.body;
 
@@ -605,6 +661,7 @@ const changeQuantity = async (req, res, next) => {
 export default {
   getBasketProducts,
   addProductToBasket,
+  addBulkProductsToBasket,
   removeAllProducts,
   changeQuantity,
   deleteProductFromBasket,

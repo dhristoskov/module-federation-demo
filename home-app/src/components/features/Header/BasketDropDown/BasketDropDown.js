@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 
 import Typography from '@/components/elements/Typography/Typography'
 import BaseIconButton from '@/components/elements/BaseIconButton/BaseIconButton'
+import useAuth from '@/hooks/useAuth'
 
 const Basket = dynamic(() => import('remote/Basket'), {
   ssr: false,
@@ -11,11 +12,29 @@ const Basket = dynamic(() => import('remote/Basket'), {
 })
 
 const CartDropDown = () => {
+  const { isLoggedIn } = useAuth()
   const [open, setOpen] = useState(false)
+  const [localStorageBasketAvailable, setLocalStorageBasketAvailable] = useState(false)
 
   const toggleOpen = () => {
     setOpen(!open)
   }
+
+  useEffect(() => {
+    const basket = localStorage.getItem('basket')
+    if (basket && isLoggedIn) {
+      setLocalStorageBasketAvailable(true)
+    } else {
+      setLocalStorageBasketAvailable(false)
+    }
+  }, [isLoggedIn])
+
+  useEffect(() => {
+    if (isLoggedIn && localStorageBasketAvailable) {
+      const event = new CustomEvent('basket-available', { detail: localStorageBasketAvailable })
+      window.dispatchEvent(event)
+    }
+  }, [localStorageBasketAvailable])
 
   return (
     <div className="relative">

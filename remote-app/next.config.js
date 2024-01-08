@@ -44,6 +44,7 @@ const nextConfig = {
           './AddOption': './src/components/modules/AddOption/AddOption',
           './Checkout': './src/components/features/Checkout/Checkout',
           './CheckoutUserInfo': './src/components/features/CheckoutUserInfo/CheckoutUserInfo',
+          './BasketModal': './src/components/modules/BasketModal/BasketModal',
         },
         shared: {
           // specify shared dependencies here
